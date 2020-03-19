@@ -9,6 +9,17 @@ public class parser{
 		parser parser = new parser(System.in);
 		parser.Program();
 	}
+
+	public static InputStream openFile(String file_path) {
+        final File file = new File(file_path);
+        try {
+            return new FileInputStream(file);
+        } catch(FileNotFoundException e) {
+            System.out.println("This file cannot be opened for reading.");
+            return null;
+        }
+    }
+	
 }
 
 PARSER_END(parser)
@@ -80,8 +91,18 @@ void Import() #void : {}
 
 void File() #void: {}
 {
-	(<IDENTIFIER>| ".") File()
+	(
+	 <IDENTIFIER>
+	|[<STATIC>] <IDENTIFIER> <DOT> <IDENTIFIER> <LPAR> ArgumentImport() <RPAR> ([<VOID>]| Type())
+	)
 }
+
+void ArgumentImport() #void : { }
+{
+	[Type() (<COMMA> Type())* ]
+}
+
+
 void ClassDeclaration() #void : {}
 {
   <CLASS> <IDENTIFIER> [ <EXTENDS> <IDENTIFIER> ] <LCURLY> VariableDeclarations() MethodDeclarations() <RCURLY>

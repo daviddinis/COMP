@@ -28,6 +28,8 @@ PARSER_END(parser)
 SKIP :
 {
 	" " | "\t" | "\r"
+	| <"//" (~["\n","\r"])* ("\n" | "\r" | "\r\n")>
+    | <"/" (~[""])* "" ("" | ~["","/"] (~[""])* "") "/">
 }
 
 // token definition (terminal symbols)

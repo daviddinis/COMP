@@ -33,11 +33,10 @@ TOKEN :
 	| < EQUALS: "=" >
 	| < EXTENDS: "extends" >
 	| < FALSE: "false" >
-	| < IDENTIFIER: ["A"-"Z","a"-"z","_","$"](["0"-"9","A"-"Z","a"-"z","_","$"])* >
 	| < IF: "if" >
 	| < IMPORT : "import" >
 	| < INT: "int" >
-	| < INTEGERLITERAL: "" >
+	| < INTEGERLITERAL: (["0"-"9"])+ >
 	| < LCURLY: "{" >
 	| < LENGTH: "length" >
 	| < LPAR: "(" >
@@ -60,12 +59,13 @@ TOKEN :
 	| < TRUE: "true" >
 	| < VOID: "void" >
 	| < WHILE: "while" >
+	| < IDENTIFIER: ["A"-"Z","a"-"z","_","$"](["0"-"9","A"-"Z","a"-"z","_","$"])* >
 }
 
 
 void Program() #void : {}
 {
-  ImportDeclarations() ClassDeclarations() EOF
+  ImportDeclarations() ClassDeclaration() <EOF>
 }
 
 void ImportDeclarations() #void : {}
@@ -78,7 +78,11 @@ void Import() #void : {}
   <IMPORT> File() <SEMICOLON> // TODO
 }
 
-void Class() #void : {}
+void File() #void: {}
+{
+	(<IDENTIFIER>| ".") File()
+}
+void ClassDeclaration() #void : {}
 {
   <CLASS> <IDENTIFIER> [ <EXTENDS> <IDENTIFIER> ] <LCURLY> VariableDeclarations() MethodDeclarations() <RCURLY>
 }
@@ -159,31 +163,58 @@ void Statement() #void : {}
   |
     <IDENTIFIER> <EQUALS> Expression() <SEMICOLON>
   |
-    <IDENTIFIER> <LSQUARE> Expression <RSQUARE> <EQUALS> Expression() <SEMICOLON>
+    <IDENTIFIER> <LSQUARE> Expression() <RSQUARE> <EQUALS> Expression() <SEMICOLON>
   )
 }
 
 void Expression() #void : {}
 {
+    Term1() <AND> Expression()
+ }
+
+void Term1() #void : {}
+{
+  Term2() <LESSTHAN> Expression()
+}
+
+void Term2() #void : { }
+{
+  Term3() <ADD> Expression()
+}
+
+void Term3() #void : { }
+{
+  	Term4() <SUB> Expression()
+}
+
+void Term4() #void : { }
+{
+  	Term5() <MUL> Expression()
+}
+
+void Term5() #void : { }
+{
+  	Term6() <DIV> Expression()
+}
+
+void Term6() #void : { }
+{
+    Term7() <LSQUARE> Expression() <RSQUARE>
+}
+
+void Term7() #void : { }
+{
+    Term8() <DOT> <LENGTH>
+}
+
+void Term8() #void : { }
+{
+    Term9() <DOT> <IDENTIFIER> <LPAR> ( Expression() [ <COMMA> Expression() ] )? <RPAR>
+}
+
+void Term9() #void : { }
+{
   (
-    Expression() <AND> Expression()
-  |
-  	Expression() <LESSTHAN> Expression()
-  |
-  	Expression() <ADD> Expression()
-  |
-  	Expression() <SUB> Expression()
-  |
-  	Expression() <MUL> Expression()
-  |
-  	Expression() <DIV> Expression()
-  |
-    Expression() <LSQUARE> Expression() <RSQUARE>
-  |
-    Expression() <DOT> <LENGTH>
-  |
-    Expression() <DOT> Identifier <LPAR> ( Expression() [ <COMMA> Expression ] )? <RPAR>
-  |
     <INTEGERLITERAL>
   | 
     <TRUE>
@@ -201,5 +232,5 @@ void Expression() #void : {}
     <NOT> Expression()
   |
     <LPAR> Expression() <RPAR>
-  )
+    )
 }

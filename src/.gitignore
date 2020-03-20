@@ -8,3 +8,7 @@
 /SimpleCharStream.java
 /Token.java
 /TokenMgrError.java
+/Node.java
+/SimpleNode.java
+
+*.class

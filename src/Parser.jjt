@@ -1,25 +1,35 @@
-options {
-LOOKAHEAD = 2;
+options
+{
+  LOOKAHEAD= 2;
+
 }
 
 PARSER_BEGIN(parser)
+import java.io.*;
 
-public class parser{
-	public static void main(String args[]) throws ParseException{
-		parser parser = new parser(System.in);
-		parser.Program();
-	}
+public class parser
+{
+  public static void main(String args []) throws ParseException
+  {
 
-	public static InputStream openFile(String file_path) {
-        final File file = new File(file_path);
-        try {
-            return new FileInputStream(file);
-        } catch(FileNotFoundException e) {
-            System.out.println("This file cannot be opened for reading.");
-            return null;
-        }
+    
+    parser parser = new parser(System.in);
+    parser.Program();
+  }
+
+  public static InputStream openFile(String file_path)
+  {
+    final File file = new File(file_path);
+    try
+    {
+      return new FileInputStream(file);
     }
-	
+    catch (FileNotFoundException e)
+    {
+      System.out.println("This file cannot be opened for reading.");
+      return null;
+    }
+  }
 }
 
 PARSER_END(parser)
@@ -27,233 +37,298 @@ PARSER_END(parser)
 // Symbols that must be skipped during the lexical analysis
 SKIP :
 {
-	" " | "\t" | "\r"
-	| <"//" (~["\n","\r"])* ("\n" | "\r" | "\r\n")>
-    | <"/" (~[""])* "" ("" | ~["","/"] (~[""])* "") "/">
+  " "
+| "\t"
+| "\r"
+| < "//" (~[ "\n", "\r" ])*
+    (
+      "\n"
+    | "\r"
+    | "\r\n"
+    ) >
+| < "/*" (~[ "*" ])* "*"
+    (
+      "*"
+    | ~[ "*", "/" ] (~[ "*" ])* "*"
+    )
+    "/" >
 }
 
 // token definition (terminal symbols)
 TOKEN :
 {
-	  < ADD: "+" >
-	| < AND: "&&" >
-	| < BOOLEAN: "boolean" >
-	| < CLASS : "class" >
-	| < COMMA: "," >
-	| < DIV: "/" >
-	| < DOT: "." >
-	| < ELSE: "else" >
-	| < EQUALS: "=" >
-	| < EXTENDS: "extends" >
-	| < FALSE: "false" >
-	| < IF: "if" >
-	| < IMPORT : "import" >
-	| < INT: "int" >
-	| < INTEGERLITERAL: (["0"-"9"])+ >
-	| < LCURLY: "{" >
-	| < LENGTH: "length" >
-	| < LPAR: "(" >
-	| < LSQUARE: "[" >
-	| < MAIN: "main" >
-	| < LESSTHAN: "<" >
-	| < MUL: "*" >
-	| < NEW: "new" >
-	| < NOT: "!" >
-	| < PUBLIC: "public">
-	| < RCURLY: "}" >
-	| < RETURN: "return" >
-	| < RPAR: ")" >
-	| < RSQUARE: "]" >
-	| < SEMICOLON : ";" >
-	| < STATIC: "static" >
-	| < STRING: "String" >
-	| < SUB: "-" >
-	| < THIS: "this" >
-	| < TRUE: "true" >
-	| < VOID: "void" >
-	| < WHILE: "while" >
-	| < IDENTIFIER: ["A"-"Z","a"-"z","_","$"](["0"-"9","A"-"Z","a"-"z","_","$"])* >
+  < ADD : "+" >
+| < AND : "&&" >
+| < BOOLEAN : "boolean" >
+| < CLASS : "class" >
+| < COMMA : "," >
+| < DIV : "/" >
+| < DOT : "." >
+| < ELSE : "else" >
+| < EQUALS : "=" >
+| < EXTENDS : "extends" >
+| < FALSE : "false" >
+| < IF : "if" >
+| < IMPORT : "import" >
+| < INT : "int" >
+| < INTEGERLITERAL : ([ "0"-"9" ])+ >
+| < LCURLY : "{" >
+| < LENGTH : "length" >
+| < LPAR : "(" >
+| < LSQUARE : "[" >
+| < MAIN : "main" >
+| < LESSTHAN : "<" >
+| < MUL : "*" >
+| < NEW : "new" >
+| < NOT : "!" >
+| < PUBLIC : "public" >
+| < RCURLY : "}" >
+| < RETURN : "return" >
+| < RPAR : ")" >
+| < RSQUARE : "]" >
+| < SEMICOLON : ";" >
+| < STATIC : "static" >
+| < STRING : "String" >
+| < SUB : "-" >
+| < THIS : "this" >
+| < TRUE : "true" >
+| < VOID : "void" >
+| < WHILE : "while" >
+| < IDENTIFIER : [ "A"-"Z", "a"-"z", "_", "$" ] ([ "0"-"9", "A"-"Z", "a"-"z", "_", "$" ])* >
 }
 
-
-void Program() #void : {}
+SimpleNode Program() : {}
 {
-  ImportDeclarations() ClassDeclaration() <EOF>
+  ImportDeclarations() ClassDeclaration() < EOF >
+  {
+    return jjtThis;
+  }
 }
 
-void ImportDeclarations() #void : {}
+void ImportDeclarations() #void :
+{}
 {
-	(Import())*
+  (
+    Import()
+  )*
 }
 
-void Import() #void : {}
+void Import() #void :
+{}
 {
-  <IMPORT> File() <SEMICOLON> // TODO
+  < IMPORT > File() < SEMICOLON > // TODO
 }
 
-void File() #void: {}
+void File() #void :
+{}
 {
-	(
-	 <IDENTIFIER>
-	|[<STATIC>] <IDENTIFIER> <DOT> <IDENTIFIER> <LPAR> ArgumentImport() <RPAR> ([<VOID>]| Type())
-	)
+  (
+    < IDENTIFIER >
+  | [ < STATIC > ] < IDENTIFIER > < DOT > < IDENTIFIER > < LPAR > ArgumentImport() < RPAR >
+    (
+      [ < VOID > ]
+    | Type()
+    )
+  )
 }
 
-void ArgumentImport() #void : { }
+void ArgumentImport() #void :
+{}
 {
-	[Type() (<COMMA> Type())* ]
+  [
+    Type()
+    (
+      < COMMA > Type()
+    )*
+  ]
 }
 
-
-void ClassDeclaration() #void : {}
+void ClassDeclaration() #void :
+{}
 {
-  <CLASS> <IDENTIFIER> [ <EXTENDS> <IDENTIFIER> ] <LCURLY> VariableDeclarations() MethodDeclarations() <RCURLY>
+  < CLASS > < IDENTIFIER > [ < EXTENDS > < IDENTIFIER > ] < LCURLY > VariableDeclarations() MethodDeclarations() < RCURLY >
 }
 
-void VariableDeclarations() #void : {}
+void VariableDeclarations() #void :
+{}
 {
-	(Variable())*
+  (
+    Variable()
+  )*
 }
 
-void Variable() #void : {}
+void Variable() #void :
+{}
 {
-  Type() <IDENTIFIER> <SEMICOLON>
+  Type() < IDENTIFIER > < SEMICOLON >
 }
 
-void MethodDeclarations() #void : {}
+void MethodDeclarations() #void :
+{}
 {
-	(GenericMethod())*
+  (
+    GenericMethod()
+  )*
 }
 
-void GenericMethod() #void : {}
+void GenericMethod() #void :
+{}
 {
   (
     Method()
-  |
+  | 
     MainMethod()
   )
 }
 
-void Method() #void : {}
+void Method() #void :
+{}
 {
-	<PUBLIC> Type() <IDENTIFIER> <LPAR> ArgumentList() <RPAR>
-    <LCURLY> VariableDeclarations() StatementDeclarations() <RETURN> Expression() <SEMICOLON> <RCURLY>
+  < PUBLIC > Type() < IDENTIFIER > < LPAR > ArgumentList() < RPAR > 
+  < LCURLY > VariableDeclarations() StatementDeclarations() < RETURN > Expression() < SEMICOLON > < RCURLY >
 }
 
-void ArgumentList() #void : {}
+void ArgumentList() #void :
+{}
 {
-	[Argument() (<COMMA> Argument())* ]
+  [
+    Argument()
+    (
+      < COMMA > Argument()
+    )*
+  ]
 }
 
-void Argument() #void : {}
+void Argument() #void :
+{}
 {
-	Type() <IDENTIFIER>
+  Type() < IDENTIFIER >
 }
 
-void MainMethod() #void : {}
+void MainMethod() #void :
+{}
 {
-	<PUBLIC> <STATIC> <VOID> <MAIN> <LPAR> <STRING> <LSQUARE> <RSQUARE> <IDENTIFIER> <RPAR>
-    <LCURLY> VariableDeclarations() StatementDeclarations() <RCURLY>
+  < PUBLIC > < STATIC > < VOID > < MAIN > < LPAR > < STRING > < LSQUARE > < RSQUARE > < IDENTIFIER > < RPAR > 
+  < LCURLY > VariableDeclarations() StatementDeclarations() < RCURLY >
 }
 
-void Type() #void : {}
+void Type() #void :
+{}
 {
   (
-    <INT> <LSQUARE> <RSQUARE>
-  |
-    <BOOLEAN>
-  |
-    <INT>
-  |
-    <IDENTIFIER>
+    < INT > < LSQUARE > < RSQUARE >
+  | 
+    < BOOLEAN >
+  | 
+    < INT >
+  | 
+    < IDENTIFIER >
   )
 }
 
-void StatementDeclarations() #void : {}
-{
-	(Statement())*
-}
-
-void Statement() #void : {}
+void StatementDeclarations() #void :
+{}
 {
   (
-    <LCURLY> StatementDeclarations() <RCURLY>
-  |
-    <IF> <LPAR> Expression() <RPAR> Statement()
-    <ELSE> Statement()
-  |
-    <WHILE> <LPAR> Expression() <RPAR> Statement()
-  |
-    <IDENTIFIER> <EQUALS> Expression() <SEMICOLON>
-  |
-    <IDENTIFIER> <LSQUARE> Expression() <RSQUARE> <EQUALS> Expression() <SEMICOLON>
+    Statement()
+  )*
+}
+
+void Statement() #void :
+{}
+{
+  (
+    < LCURLY > StatementDeclarations() < RCURLY >
+  | 
+    < IF > < LPAR > Expression() < RPAR > Statement() 
+    < ELSE > Statement()
+  | 
+    < WHILE > < LPAR > Expression() < RPAR > Statement()
+  | 
+    < IDENTIFIER > < EQUALS > Expression() < SEMICOLON >
+  | 
+    < IDENTIFIER > < LSQUARE > Expression() < RSQUARE > < EQUALS > Expression() < SEMICOLON >
   )
 }
 
-void Expression() #void : {}
+void Expression() #void :
+{}
 {
-    Term1() <AND> Expression()
- }
-
-void Term1() #void : {}
-{
-  Term2() <LESSTHAN> Expression()
+  Term1() < AND > Expression()
 }
 
-void Term2() #void : { }
+void Term1() #void :
+{}
 {
-  Term3() <ADD> Expression()
+  Term2() < LESSTHAN > Expression()
 }
 
-void Term3() #void : { }
+void Term2() #void :
+{}
 {
-  	Term4() <SUB> Expression()
+  Term3() < ADD > Expression()
 }
 
-void Term4() #void : { }
+void Term3() #void :
+{}
 {
-  	Term5() <MUL> Expression()
+  Term4() < SUB > Expression()
 }
 
-void Term5() #void : { }
+void Term4() #void :
+{}
 {
-  	Term6() <DIV> Expression()
+  Term5() < MUL > Expression()
 }
 
-void Term6() #void : { }
+void Term5() #void :
+{}
 {
-    Term7() <LSQUARE> Expression() <RSQUARE>
+  Term6() < DIV > Expression()
 }
 
-void Term7() #void : { }
+void Term6() #void :
+{}
 {
-    Term8() <DOT> <LENGTH>
+  Term7() < LSQUARE > Expression() < RSQUARE >
 }
 
-void Term8() #void : { }
+void Term7() #void :
+{}
 {
-    Term9() <DOT> <IDENTIFIER> <LPAR> ( Expression() [ <COMMA> Expression() ] )? <RPAR>
+  Term8() < DOT > < LENGTH >
 }
 
-void Term9() #void : { }
+void Term8() #void :
+{}
+{
+  Term9() < DOT > < IDENTIFIER > < LPAR >
+  (
+    Expression() [ < COMMA > Expression() ]
+  )?
+  < RPAR >
+}
+
+void Term9() #void :
+{}
 {
   (
-    <INTEGERLITERAL>
+    < INTEGERLITERAL >
   | 
-    <TRUE>
+    < TRUE >
   | 
-    <FALSE>
-  |
-    <IDENTIFIER>
-  |
-    <THIS>
-  |
-    <NEW> <INT> <LSQUARE> Expression() <RSQUARE>
-  |
-    <NEW> <IDENTIFIER> <LPAR> <RPAR>
-  |
-    <NOT> Expression()
-  |
-    <LPAR> Expression() <RPAR>
-    )
+    < FALSE >
+  | 
+    < IDENTIFIER >
+  | 
+    < THIS >
+  | 
+    < NEW > < INT > < LSQUARE > Expression() < RSQUARE >
+  | 
+    < NEW > < IDENTIFIER > < LPAR > < RPAR >
+  | 
+    < NOT > Expression()
+  | 
+    < LPAR > Expression() < RPAR >
+  )
 }

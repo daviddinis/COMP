@@ -4,35 +4,35 @@ options
 
 }
 
-PARSER_BEGIN(parser)
-import java.io.*;
+PARSER_BEGIN(Parser)
 
-public class parser
+import java.io.FileNotFoundException;
+
+public class Parser
 {
   public static void main(String args []) throws ParseException
   {
-
+    Parser parser;
     
-    parser parser = new parser(System.in);
-    parser.Program();
-  }
+    if(args.length == 1) {
+      try {
+		    java.io.FileInputStream file = new java.io.FileInputStream(new java.io.File(args[0]));
+	      parser = new Parser(file);
+      } catch (FileNotFoundException e) {
+        System.out.println(e);
+        return;
+      }
+    } 
+    else {
+  	  parser = new Parser(System.in);
+  	}
 
-  public static InputStream openFile(String file_path)
-  {
-    final File file = new File(file_path);
-    try
-    {
-      return new FileInputStream(file);
-    }
-    catch (FileNotFoundException e)
-    {
-      System.out.println("This file cannot be opened for reading.");
-      return null;
-    }
+	SimpleNode root = parser.Program();
+
   }
 }
 
-PARSER_END(parser)
+PARSER_END(Parser)
 
 // Symbols that must be skipped during the lexical analysis
 SKIP :

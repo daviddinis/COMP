@@ -53,50 +53,50 @@ public class ParserTest {
         }
     }
 
-    @Test
-    public void testFindMaximum() {
-        test("fixtures/public/FindMaximum.jmm", false);
-    }
+    // @Test
+    // public void testFindMaximum() {
+    //     test("fixtures/public/FindMaximum.jmm", false);
+    // }
 
-    @Test
-    public void testHelloWorld() {
-        test("fixtures/public/HelloWorld.jmm", false);
-    }
+    // @Test
+    // public void testHelloWorld() {
+    //     test("fixtures/public/HelloWorld.jmm", false);
+    // }
 
-    @Test
-    public void testLazysort() {
-        test("fixtures/public/Lazysort.jmm", false);
-    }
+    // @Test
+    // public void testLazysort() {
+    //     test("fixtures/public/Lazysort.jmm", false);
+    // }
 
-    @Test
-    public void testLife() {
-        test("fixtures/public/Life.jmm", false);
-    }
+    // @Test
+    // public void testLife() {
+    //     test("fixtures/public/Life.jmm", false);
+    // }
 
-    @Test
-    public void testMonteCarloPi() {
-        test("fixtures/public/MonteCarloPi.jmm", false);
-    }
+    // @Test
+    // public void testMonteCarloPi() {
+    //     test("fixtures/public/MonteCarloPi.jmm", false);
+    // }
 
-    @Test
-    public void testQuickSort() {
-        test("fixtures/public/QuickSort.jmm", false);
-    }
+    // @Test
+    // public void testQuickSort() {
+    //     test("fixtures/public/QuickSort.jmm", false);
+    // }
 
-    @Test
-    public void testSimple() {
-        test("fixtures/public/Simple.jmm", false);
-    }
+    // @Test
+    // public void testSimple() {
+    //     test("fixtures/public/Simple.jmm", false);
+    // }
 
-    @Test
-    public void testTicTacToe() {
-        test("fixtures/public/TicTacToe.jmm", false);
-    }
+    // @Test
+    // public void testTicTacToe() {
+    //     test("fixtures/public/TicTacToe.jmm", false);
+    // }
 
-    @Test
-    public void testWhileAndIF() {
-        test("fixtures/public/WhileAndIF.jmm", false);
-    }
+    // @Test
+    // public void testWhileAndIF() {
+    //     test("fixtures/public/WhileAndIF.jmm", false);
+    // }
 
     // @Test
     // public void testarr_index_not_int() {

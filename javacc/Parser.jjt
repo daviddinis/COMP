@@ -7,9 +7,12 @@ options
 PARSER_BEGIN(Parser)
 
 import java.io.FileNotFoundException;
+import java.io.*;
 
 public class Parser
 {
+  static private int errorCount = 10;
+
   public static void main(String args []) throws ParseException
   {
     Parser parser;
@@ -27,12 +30,47 @@ public class Parser
   	  parser = new Parser(System.in);
   	}
 
-	SimpleNode root = parser.Program();
-
+	  SimpleNode root = parser.Program();
+    errorCount = 10;
   }
 }
 
 PARSER_END(Parser)
+
+JAVACODE
+void skipto(int type) {
+  ParseException e = generateParseException();
+  System.out.println(e.toString());
+  Token t;
+  do {
+    t = getNextToken();
+  } while (t.kind != type);
+}
+
+JAVACODE
+void skipto_dont_consume(int type) {
+  ParseException e = generateParseException();
+  System.out.println(e.toString());
+  Token t;
+  int next;
+  boolean consume = false;
+  do{
+	  if(consume)
+		  t = getNextToken();
+	  next = getToken(0).kind;
+	  consume = true;
+  } while (next != type);
+}
+
+JAVACODE
+void statementError() {
+  ParseException e = generateParseException();
+  System.out.println(e.toString());
+  errorCount--;
+  if(errorCount == 0) {
+    System.exit(0);
+  }
+}
 
 // Symbols that must be skipped during the lexical analysis
 SKIP :
@@ -40,6 +78,7 @@ SKIP :
   " "
 | "\t"
 | "\r"
+| "\n"
 | < "//" (~[ "\n", "\r" ])*
     (
       "\n"
@@ -71,7 +110,7 @@ TOKEN :
 | < IF : "if" >
 | < IMPORT : "import" >
 | < INT : "int" >
-| < INTEGERLITERAL : ([ "0"-"9" ])+ >
+| < INTEGERLITERAL : (["0"-"9"])+ >
 | < LCURLY : "{" >
 | < LENGTH : "length" >
 | < LPAR : "(" >
@@ -94,7 +133,7 @@ TOKEN :
 | < TRUE : "true" >
 | < VOID : "void" >
 | < WHILE : "while" >
-| < IDENTIFIER : [ "A"-"Z", "a"-"z", "_", "$" ] ([ "0"-"9", "A"-"Z", "a"-"z", "_", "$" ])* >
+| < IDENTIFIER :  ["A"-"Z","a"-"z","$","_"](["0"-"9","A"-"Z","a"-"z","_","$"])* >
 }
 
 SimpleNode Program() : {}
@@ -116,7 +155,7 @@ void ImportDeclarations() #void :
 void Import() #void :
 {}
 {
-  < IMPORT > File() < SEMICOLON > // TODO
+  < IMPORT > File() < SEMICOLON >
 }
 
 void File() #void :
@@ -237,76 +276,93 @@ void StatementDeclarations() #void :
 void Statement() #void :
 {}
 {
-  (
-    < LCURLY > StatementDeclarations() < RCURLY >
-  | 
-    < IF > < LPAR > Expression() < RPAR > Statement() 
-    < ELSE > Statement()
-  | 
-    < WHILE > < LPAR > Expression() < RPAR > Statement()
-  | 
-    < IDENTIFIER > < EQUALS > Expression() < SEMICOLON >
-  | 
-    < IDENTIFIER > < LSQUARE > Expression() < RSQUARE > < EQUALS > Expression() < SEMICOLON >
-  )
+  try {
+    (
+      < LCURLY > StatementDeclarations() < RCURLY >
+    | 
+      < IF > < LPAR > Expression() < RPAR > Statement() 
+      < ELSE > Statement()
+    | 
+      While()
+    | 
+      < IDENTIFIER > < EQUALS > Expression() < SEMICOLON >
+    | 
+      < IDENTIFIER > < LSQUARE > Expression() < RSQUARE > < EQUALS > Expression() < SEMICOLON >
+    )
+  }
+  catch(ParseException e) {
+     statementError();
+  }
+}
+
+void While() #void : {}
+{
+  try{
+    < WHILE > < LPAR > Expression() < RPAR >
+  }
+  catch(ParseException e) {
+    System.out.println("While error detected");
+    skipto_dont_consume(LCURLY);
+  }
+  Statement()
 }
 
 void Expression() #void :
 {}
 {
-  Term1() < AND > Expression()
+  Term1() [ < AND > Expression() ]
 }
 
 void Term1() #void :
 {}
 {
-  Term2() < LESSTHAN > Expression()
+  Term2() [ < LESSTHAN > Expression() ]
 }
 
 void Term2() #void :
 {}
 {
-  Term3() < ADD > Expression()
+  Term3() [ < ADD > Expression() ]
 }
 
 void Term3() #void :
 {}
 {
-  Term4() < SUB > Expression()
+  Term4() [ < SUB > Expression() ]
 }
 
 void Term4() #void :
 {}
 {
-  Term5() < MUL > Expression()
+  Term5() [ < MUL > Expression() ]
 }
 
 void Term5() #void :
 {}
 {
-  Term6() < DIV > Expression()
+  Term6() [ < DIV > Expression() ]
 }
 
 void Term6() #void :
 {}
 {
-  Term7() < LSQUARE > Expression() < RSQUARE >
+  Term7() [ < LSQUARE > Expression() < RSQUARE > ]
 }
 
 void Term7() #void :
 {}
 {
-  Term8() < DOT > < LENGTH >
+  Term8() [ < DOT > < LENGTH > ]
 }
 
 void Term8() #void :
 {}
 {
-  Term9() < DOT > < IDENTIFIER > < LPAR >
+  Term9()  [ < DOT > < IDENTIFIER > < LPAR >
   (
     Expression() [ < COMMA > Expression() ]
   )?
-  < RPAR >
+  < RPAR > ]
 }
 
 void Term9() #void :

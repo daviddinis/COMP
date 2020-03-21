@@ -7,7 +7,7 @@ import org.junit.Test;
 
 public class ParserTest {
 
-    private static String CLASS_WITH_MAIN = "Main";
+    private static String CLASS_WITH_MAIN = "Parser";
 
     private void test(String jmmResource, boolean mustFail) {
         //Copy contents of resource to a temporary file
@@ -158,10 +158,10 @@ public class ParserTest {
     //     test("fixtures/public/fail/syntactical/BlowUp.jmm", true);
     // }
 
-    // @Test
-    // public void testCompleteWhileTest() {
-    //     test("fixtures/public/fail/syntactical/CompleteWhileTest.jmm", true);
-    // }
+    @Test
+    public void testCompleteWhileTest() {
+        test("fixtures/public/fail/syntactical/CompleteWhileTest.jmm", true);
+    }
 
     // @Test
     // public void testLengthError() {
@@ -178,9 +178,9 @@ public class ParserTest {
     //     test("fixtures/public/fail/syntactical/MultipleSequential.jmm", true);
     // }
 
-    @Test
-    public void testNestedLoop() {
-        test("fixtures/public/fail/syntactical/NestedLoop.jmm", true);
-    }
+    // @Test
+    // public void testNestedLoop() {
+    //     test("fixtures/public/fail/syntactical/NestedLoop.jmm", true);
+    // }
 
 }

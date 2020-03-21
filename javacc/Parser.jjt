@@ -17,7 +17,9 @@ public class Parser
   public static void main(String args []) throws ParseException
   {
     Parser parser;
-    
+
+    errorCount = MAX_ERROR_COUNT;
+
     if(args.length == 1) {
       try {
 		    java.io.FileInputStream file = new java.io.FileInputStream(new java.io.File(args[0]));
@@ -32,11 +34,12 @@ public class Parser
   	}
 
     SimpleNode root = parser.Program();
+    root.dump("");
 
-    if(errorCount != 10){
+    if(errorCount < 10){
+      System.out.println("pqp");
       throw new ParseException();
     }
-    errorCount = MAX_ERROR_COUNT;
   }
 }
 
@@ -91,7 +94,7 @@ SKIP :
     (
       "*"
     | ~[ "*", "/" ] (~[ "*" ])* "*"
-    )
+    )*
     "/" >
 }
 
@@ -146,7 +149,7 @@ SimpleNode Program() : {}
   }
 }
 
-void ImportDeclarations() #void :
+void ImportDeclarations()  :
 {}
 {
   (
@@ -154,43 +157,43 @@ void ImportDeclarations() #void :
   )*
 }
 
-void Import() #void :
+void Import() :
 {}
 {
   < IMPORT > File() < SEMICOLON >
 }
 
-void File() #void :
+void File() :
 {}
 {
   (
-    < IDENTIFIER >
-  | [ < STATIC > ] < IDENTIFIER > < DOT > < IDENTIFIER > < LPAR > ArgumentImport() < RPAR >
+    [ < STATIC > ] < IDENTIFIER > < DOT > < IDENTIFIER > < LPAR > ArgumentImport() < RPAR >
     (
-      [ < VOID > ]
-    | Type()
+      Type() | [ < VOID > ]
     )
+    |< IDENTIFIER >
+    
   )
 }
 
-void ArgumentImport() #void :
+void ArgumentImport()  :
 {}
 {
   [
-    Type()
+    (Type() | <VOID>)
     (
-      < COMMA > Type()
+      < COMMA > (Type() | <VOID>)
     )*
   ]
 }
 
-void ClassDeclaration() #void :
+void ClassDeclaration()   :
 {}
 {
   < CLASS > < IDENTIFIER > [ < EXTENDS > < IDENTIFIER > ] < LCURLY > VariableDeclarations() MethodDeclarations() < RCURLY >
 }
 
-void VariableDeclarations() #void :
+void VariableDeclarations()   :
 {}
 {
   (
@@ -198,13 +201,13 @@ void VariableDeclarations() #void :
   )*
 }
 
-void Variable() #void :
+void Variable()   :
 {}
 {
   Type() < IDENTIFIER > < SEMICOLON >
 }
 
-void MethodDeclarations() #void :
+void MethodDeclarations()   :
 {}
 {
   (
@@ -212,7 +215,7 @@ void MethodDeclarations() #void :
   )*
 }
 
-void GenericMethod() #void :
+void GenericMethod()   :
 {}
 {
   (
@@ -222,14 +225,14 @@ void GenericMethod() #void :
   )
 }
 
-void Method() #void :
+void Method()   :
 {}
 {
   < PUBLIC > Type() < IDENTIFIER > < LPAR > ArgumentList() < RPAR > 
   < LCURLY > VariableDeclarations() StatementDeclarations() < RETURN > Expression() < SEMICOLON > < RCURLY >
 }
 
-void ArgumentList() #void :
+void ArgumentList()   :
 {}
 {
   [
@@ -240,20 +243,20 @@ void ArgumentList() #void :
   ]
 }
 
-void Argument() #void :
+void Argument()   :
 {}
 {
   Type() < IDENTIFIER >
 }
 
-void MainMethod() #void :
+void MainMethod()   :
 {}
 {
   < PUBLIC > < STATIC > < VOID > < MAIN > < LPAR > < STRING > < LSQUARE > < RSQUARE > < IDENTIFIER > < RPAR > 
   < LCURLY > VariableDeclarations() StatementDeclarations() < RCURLY >
 }
 
-void Type() #void :
+void Type()   :
 {}
 {
   (
@@ -267,7 +270,7 @@ void Type() #void :
   )
 }
 
-void StatementDeclarations() #void :
+void StatementDeclarations()   :
 {}
 {
   (
@@ -275,7 +278,7 @@ void StatementDeclarations() #void :
   )*
 }
 
-void Statement() #void :
+void Statement()   :
 {}
 {
     (
@@ -285,15 +288,17 @@ void Statement() #void :
       < ELSE > Statement()
     | 
       While()
-    | 
-      < IDENTIFIER > < EQUALS > Expression() < SEMICOLON >
-    | 
+    |
       < IDENTIFIER > < LSQUARE > Expression() < RSQUARE > < EQUALS > Expression() < SEMICOLON >
+    |
+    < IDENTIFIER > < EQUALS > Expression() < SEMICOLON >
+    |
+    Expression() <SEMICOLON>
     )
 
 }
 
-void While() #void : {}
+void While()   : {}
 {
   try{
     < WHILE > < LPAR > Expression() < RPAR >
@@ -306,65 +311,65 @@ void While() #void : {}
   Statement()
 }
 
-void Expression() #void :
+void Expression()   :
 {}
 {
   Term1() [ < AND > Expression() ]
 }
 
-void Term1() #void :
+void Term1()   :
 {}
 {
   Term2() [ < LESSTHAN > Expression() ]
 }
 
-void Term2() #void :
+void Term2()   :
 {}
 {
   Term3() [ < ADD > Expression() ]
 }
 
-void Term3() #void :
+void Term3()   :
 {}
 {
   Term4() [ < SUB > Expression() ]
 }
 
-void Term4() #void :
+void Term4()   :
 {}
 {
   Term5() [ < MUL > Expression() ]
 }
 
-void Term5() #void :
+void Term5()   :
 {}
 {
   Term6() [ < DIV > Expression() ]
 }
 
-void Term6() #void :
+void Term6()   :
 {}
 {
   Term7() [ < LSQUARE > Expression() < RSQUARE > ]
 }
 
-void Term7() #void :
+void Term7()   :
 {}
 {
   Term8() [ < DOT > < LENGTH > ]
 }
 
-void Term8() #void :
+void Term8()   :
 {}
 {
   Term9()  [ < DOT > < IDENTIFIER > < LPAR >
   (
-    Expression() [ < COMMA > Expression() ]
+    Expression() ( < COMMA > Expression())*
   )?
   < RPAR > ]
 }
 
-void Term9() #void :
+void Term9()   :
 {}
 {
   (

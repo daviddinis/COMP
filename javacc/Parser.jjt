@@ -37,7 +37,6 @@ public class Parser
     root.dump("");
 
     if(errorCount < 10){
-      System.out.println("pqp");
       throw new ParseException();
     }
   }
@@ -65,7 +64,7 @@ void skipto_dont_consume(int type) {
     }
     next = getToken(1).kind;
 	  consume = true;
-  } while (next != type);
+  } while (next != type && next != EOF);
 }
 
 JAVACODE

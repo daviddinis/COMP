@@ -10,7 +10,7 @@ public class ParserTest {
     private static String CLASS_WITH_MAIN = "Main";
 
     private void test(String jmmResource, boolean mustFail) {
-        // Copy contents of resource to a temporary file
+        //Copy contents of resource to a temporary file
         File tempFolder = CompUtils.getTempFolder("comp_jmm_test");
         File testFile = CompUtils.resourceCopy(jmmResource, tempFolder);
 
@@ -18,13 +18,13 @@ public class ParserTest {
 
         try {
 
-            // Get class with main
+            //et class with main
             Class<?> mainClass = Class.forName(CLASS_WITH_MAIN);
 
-            // It is expected that class has a main function
+           // It is expected that class has a main function
             Method mainMethod = mainClass.getMethod("main", String[].class);
 
-            // Invoke main method with file as argument
+            //Invoke main method with file as argument
             String[] mainArgs = { testFile.getAbsolutePath() };
             Object[] invokeArgs = { mainArgs };
             mainMethod.invoke(null, invokeArgs);
@@ -34,11 +34,11 @@ public class ParserTest {
             e.printStackTrace();
             success = false;
         } finally {
-            // Clean-up
+           // Clean-up
             testFile.delete();
         }
 
-        // Flip result, in case failure is needed
+        //Flip result, in case failure is needed
         if (mustFail) {
             success = !success;
         }
@@ -153,30 +153,30 @@ public class ParserTest {
     //     test("fixtures/public/fail/semantic/extra/miss_type.jmm", true);
     // }
 
-    @Test
-    public void testBlowUp() {
-        test("fixtures/public/fail/syntactical/BlowUp.jmm", true);
-    }
+    // @Test
+    // public void testBlowUp() {
+    //     test("fixtures/public/fail/syntactical/BlowUp.jmm", true);
+    // }
 
-    @Test
-    public void testCompleteWhileTest() {
-        test("fixtures/public/fail/syntactical/CompleteWhileTest.jmm", true);
-    }
+    // @Test
+    // public void testCompleteWhileTest() {
+    //     test("fixtures/public/fail/syntactical/CompleteWhileTest.jmm", true);
+    // }
 
-    @Test
-    public void testLengthError() {
-        test("fixtures/public/fail/syntactical/LengthError.jmm", true);
-    }
+    // @Test
+    // public void testLengthError() {
+    //     test("fixtures/public/fail/syntactical/LengthError.jmm", true);
+    // }
 
-    @Test
-    public void testMissingRightPar() {
-        test("fixtures/public/fail/syntactical/MissingRightPar.jmm", true);
-    }
+    // @Test
+    // public void testMissingRightPar() {
+    //     test("fixtures/public/fail/syntactical/MissingRightPar.jmm", true);
+    // }
 
-    @Test
-    public void testMultipleSequential() {
-        test("fixtures/public/fail/syntactical/MultipleSequential.jmm", true);
-    }
+    // @Test
+    // public void testMultipleSequential() {
+    //     test("fixtures/public/fail/syntactical/MultipleSequential.jmm", true);
+    // }
 
     @Test
     public void testNestedLoop() {

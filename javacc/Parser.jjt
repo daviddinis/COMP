@@ -49,7 +49,7 @@ void skipto(int type) {
   Token t;
   do {
     t = getNextToken();
-  } while (t.kind != type);
+  } while (t.kind != type && t.kind != EOF);
 }
 
 JAVACODE
@@ -60,7 +60,6 @@ void skipto_dont_consume(int type) {
   do{
 	  if(consume){
 		  t = getNextToken();
-      System.out.println(t.image);
     }
     next = getToken(1).kind;
 	  consume = true;
@@ -68,8 +67,43 @@ void skipto_dont_consume(int type) {
 }
 
 JAVACODE
-void statementError() {
+void skip_all(int type) {
+  Token t;
+  int next;
+  boolean consume = false;
+  do {
+    if (consume) t = getNextToken();
+    next = getToken(1).kind;
+    consume = true;
+  } while(next == type);
+}
+
+JAVACODE
+void skipto_while_expression() {
+  skipto_dont_consume(RPAR);
+  skip_all(RPAR);
+}
+
+JAVACODE
+void printErrorMessage(ParseException e) {
+  System.out.println("----- ERROR FOUND -----");
+  System.out.println(e.currentToken.next.image + " Line " +
+	e.currentToken.beginLine + " Column " +
+	e.currentToken.beginColumn);
+
+	System.out.println("EXPECTED TOKENS");
+
+	for(int i = 0; i < e.expectedTokenSequences.length; i++) {
+		for(int k = 0; k < e.expectedTokenSequences[i].length; k++) {
+			System.out.println(tokenImage[e.expectedTokenSequences[i][k]]);
+		}
+	}
+}
+
+JAVACODE
+void whileError(ParseException e) {
   errorCount--;
+  printErrorMessage(e);
   if(errorCount == 0) {
     System.out.println("Error exit");
     System.exit(0);
@@ -329,8 +363,8 @@ void While()   : {}
   }
   catch(ParseException e) {
     System.out.println("While error detected");
-    statementError();
-    skipto_dont_consume(LCURLY);
+    whileError(e);
+    skipto_while_expression();
   }
   Statement()
 }
@@ -344,38 +378,58 @@ void WhileExpression()  :
 void Expression()  #void :
 {}
 {
-  Term1() [ < AND > #AND Expression() ] 
+  Term1() ( And() )*
 }
 
-void Term1()  #void :
-{}
+void And() : {}
 {
-  Term2() [ < LESSTHAN > #LESSTHAN Expression() ] 
+  < AND > Term1()
 }
 
-void Term2()  #void :
+void Term1() #void :
 {}
 {
-  Term3() [ < ADD > #ADD Expression() ]
+  Term2() ( LessThan() )* 
+}
+
+void LessThan() : {}
+{
+  < LESSTHAN > Term2()
+}
+
+void Term2() #void :
+{}
+{
+  Term3() ( Add() | Sub() )*
+}
+
+void Add() : {}
+{
+  < ADD >  Term3()
+}
+
+void Sub() : {}
+{
+  <SUB> Term3()
 }
 
 void Term3()  #void :
 {}
 {
-  Term4() [ < SUB > #SUB Expression() ]
+  Term6() ( Mul() | Div())*
 }
 
-void Term4()  #void :
-{}
+void Mul() : {}
 {
-  Term5() [ < MUL > #MUL Expression() ]
+  < MUL > Term6()
 }
 
-void Term5() #void  :
-{}
+void Div() : {}
 {
-  Term6() [ < DIV > #DIV Expression() ]
+  <DIV> Term6()
 }
+
+
 
 void Term6() #void  :
 {}
@@ -424,8 +478,8 @@ void Term9() #void :
   | 
     < NOT > #NOT Expression()
   | 
-    < LPAR >  Expression() < RPAR >
-  )
+    Par()
+  ) 
 }
 
 void IntLiteral() : {Token t;}
@@ -441,4 +495,9 @@ void Identifier() : {Token t;}
 void NewInt() : {Token t3, t4;}
 {
   (< NEW > < INT > t3=< LSQUARE >  Expression() t4=< RSQUARE >) { jjtThis.jjtSetValue(t3.image + t4.image); }
+}
+
+void Par(): {}
+{
+  < LPAR > Expression() < RPAR >
 }

@@ -1,7 +1,6 @@
 options
 {
   LOOKAHEAD= 1;
-  DEBUG_PARSER = true;
 }
 
 PARSER_BEGIN(Parser)
@@ -261,7 +260,12 @@ void Method()   :
 {}
 {
   Type() Identifier() < LPAR > ArgumentList() < RPAR > 
-  < LCURLY > VariableDeclarations() StatementDeclarations() < RETURN > Expression() < SEMICOLON > < RCURLY >
+  < LCURLY > VariableDeclarations() StatementDeclarations() Return()
+}
+
+void Return(): {}
+{
+  < RETURN > Expression() < SEMICOLON > < RCURLY >
 }
 
 void ArgumentList() #void  :

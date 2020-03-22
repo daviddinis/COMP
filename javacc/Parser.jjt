@@ -1,7 +1,7 @@
 options
 {
-  LOOKAHEAD= 2;
-
+  LOOKAHEAD= 1;
+  DEBUG_PARSER = true;
 }
 
 PARSER_BEGIN(Parser)
@@ -200,12 +200,10 @@ void File() #void :
 {}
 {
   (
-    [ < STATIC > #Static ] Identifier() < DOT > Identifier() < LPAR > ArgumentImport() < RPAR >
+    [ < STATIC > #Static ] Identifier() (< DOT > Identifier())* [< LPAR > ArgumentImport() < RPAR >]
     (
       Type() | [ < VOID > #Void ]
     )
-    |Identifier()
-    
   )
 }
 
@@ -223,14 +221,14 @@ void ArgumentImport()   :
 void ClassDeclaration()  :
 {}
 {
-  < CLASS > Identifier() [ < EXTENDS > Identifier()] < LCURLY > VariableDeclarations() MethodDeclarations() < RCURLY >
+  < CLASS > Identifier() [ < EXTENDS > Identifier()] < LCURLY >  VariableDeclarations() MethodDeclarations() < RCURLY >
 }
 
 void VariableDeclarations() #void  :
 {}
 {
   (
-    Variable()
+   LOOKAHEAD(2) Variable()
   )*
 }
 
@@ -251,6 +249,7 @@ void MethodDeclarations() #void  :
 void GenericMethod()  #void :
 {}
 {
+  < PUBLIC >
   (
     Method()
   | 
@@ -261,7 +260,7 @@ void GenericMethod()  #void :
 void Method()   :
 {}
 {
-  < PUBLIC > Type() Identifier() < LPAR > ArgumentList() < RPAR > 
+  Type() Identifier() < LPAR > ArgumentList() < RPAR > 
   < LCURLY > VariableDeclarations() StatementDeclarations() < RETURN > Expression() < SEMICOLON > < RCURLY >
 }
 
@@ -285,7 +284,7 @@ void Argument()  #void :
 void MainMethod() :
 {}
 {
-  < PUBLIC > < STATIC > < VOID > < MAIN > < LPAR > < STRING > < LSQUARE > < RSQUARE > Identifier() < RPAR > 
+  < STATIC > < VOID > < MAIN > < LPAR > < STRING > < LSQUARE > < RSQUARE > Identifier() < RPAR > 
   < LCURLY > VariableDeclarations() StatementDeclarations() < RCURLY >
 }
 
@@ -293,7 +292,7 @@ void Type() #void :
 {}
 {
   (
-    < INT > < LSQUARE > < RSQUARE > #IntArray
+    LOOKAHEAD(2) < INT > < LSQUARE > < RSQUARE > #IntArray
   | 
     < BOOLEAN > #Bool
   | 
@@ -313,7 +312,7 @@ void StatementDeclarations()  #void :
 
 void Statement() #void  :
 {}
-{
+{ 
     (
       < LCURLY > StatementDeclarations() < RCURLY >
     | 
@@ -322,9 +321,9 @@ void Statement() #void  :
     | 
       While()
     |
-      Equals()
+     LOOKAHEAD(2) Equals()
     |
-    Expression() <SEMICOLON>
+     Expression() <SEMICOLON>
     )
 
 }
@@ -347,8 +346,9 @@ void Else() : {}
 
 void Equals() : {}
 {
-  Identifier() < LSQUARE > #LSQUARE Expression() < RSQUARE > #RSQUARE < EQUALS > EqualsExpression() < SEMICOLON >
-  |Identifier() < EQUALS > EqualsExpression() < SEMICOLON >
+  Identifier()
+    (< LSQUARE > #LSQUARE Expression() < RSQUARE > #RSQUARE < EQUALS > EqualsExpression() < SEMICOLON >
+    | < EQUALS > EqualsExpression() < SEMICOLON >)
 }
 
 void EqualsExpression() : {}
@@ -378,7 +378,7 @@ void WhileExpression()  :
 void Expression()  #void :
 {}
 {
-  Term1() ( And() )*
+  Term1() ( LOOKAHEAD(2) And() )*
 }
 
 void And() : {}
@@ -389,7 +389,7 @@ void And() : {}
 void Term1() #void :
 {}
 {
-  Term2() ( LessThan() )* 
+  Term2() ( LOOKAHEAD(2) LessThan() )* 
 }
 
 void LessThan() : {}
@@ -400,12 +400,12 @@ void LessThan() : {}
 void Term2() #void :
 {}
 {
-  Term3() ( Add() | Sub() )*
+ Term3() ( Add() | Sub() )*
 }
 
 void Add() : {}
 {
-  < ADD >  Term3()
+ < ADD > Term3() 
 }
 
 void Sub() : {}
@@ -429,24 +429,22 @@ void Div() : {}
   <DIV> Term6()
 }
 
-
-
 void Term6() #void  :
 {}
 {
-  Term7() [ < LSQUARE > #LSQUARE Expression() <RSQUARE> #RSQUARE ]
+  Term7() [ LOOKAHEAD(2) < LSQUARE > #LSQUARE Expression() <RSQUARE> #RSQUARE ]
 }
 
 void Term7()#void   :
 {}
 {
-  Term8() [ < DOT > < LENGTH > #LENGTH ]
+  Term8()  [ LOOKAHEAD(2) < DOT > < LENGTH > #LENGTH ]
 }
 
 void Term8()  #void :
 {}
 {
-  Term9()  [ < DOT >  Identifier() < LPAR >
+  Term9()  [ LOOKAHEAD(2) < DOT >  Identifier() < LPAR >
   (
     ArgumentCall()
   )?
@@ -468,13 +466,13 @@ void Term9() #void :
   | 
     < FALSE > #FALSE
   | 
-    Identifier()
+    LOOKAHEAD(2) Identifier()
   | 
     < THIS > #THIS
   | 
-     NewInt()
+    LOOKAHEAD(2) NewInt()
   | 
-    < NEW > #NEW Identifier() < LPAR > < RPAR > 
+   < NEW > #NEW Identifier() < LPAR > < RPAR > 
   | 
     < NOT > #NOT Expression()
   | 

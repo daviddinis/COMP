@@ -148,7 +148,7 @@ SimpleNode Program() : {}
   }
 }
 
-void ImportDeclarations()  :
+void ImportDeclarations() #void :
 {}
 {
   (
@@ -156,26 +156,26 @@ void ImportDeclarations()  :
   )*
 }
 
-void Import() :
+void Import()  :
 {}
 {
   < IMPORT > File() < SEMICOLON >
 }
 
-void File() :
+void File() #void :
 {}
 {
   (
-    [ < STATIC > ] < IDENTIFIER > < DOT > < IDENTIFIER > < LPAR > ArgumentImport() < RPAR >
+    [ < STATIC > #Static ] Identifier() < DOT > Identifier() < LPAR > ArgumentImport() < RPAR >
     (
-      Type() | [ < VOID > ]
+      Type() | [ < VOID > #Void ]
     )
-    |< IDENTIFIER >
+    |Identifier()
     
   )
 }
 
-void ArgumentImport()  :
+void ArgumentImport()   :
 {}
 {
   [
@@ -186,13 +186,13 @@ void ArgumentImport()  :
   ]
 }
 
-void ClassDeclaration()   :
+void ClassDeclaration()  :
 {}
 {
-  < CLASS > < IDENTIFIER > [ < EXTENDS > < IDENTIFIER > ] < LCURLY > VariableDeclarations() MethodDeclarations() < RCURLY >
+  < CLASS > Identifier() [ < EXTENDS > Identifier()] < LCURLY > VariableDeclarations() MethodDeclarations() < RCURLY >
 }
 
-void VariableDeclarations()   :
+void VariableDeclarations() #void  :
 {}
 {
   (
@@ -200,13 +200,13 @@ void VariableDeclarations()   :
   )*
 }
 
-void Variable()   :
+void Variable()  :
 {}
 {
-  Type() < IDENTIFIER > < SEMICOLON >
+  Type() Identifier() < SEMICOLON >
 }
 
-void MethodDeclarations()   :
+void MethodDeclarations() #void  :
 {}
 {
   (
@@ -214,7 +214,7 @@ void MethodDeclarations()   :
   )*
 }
 
-void GenericMethod()   :
+void GenericMethod()  #void :
 {}
 {
   (
@@ -227,11 +227,11 @@ void GenericMethod()   :
 void Method()   :
 {}
 {
-  < PUBLIC > Type() < IDENTIFIER > < LPAR > ArgumentList() < RPAR > 
+  < PUBLIC > Type() Identifier() < LPAR > ArgumentList() < RPAR > 
   < LCURLY > VariableDeclarations() StatementDeclarations() < RETURN > Expression() < SEMICOLON > < RCURLY >
 }
 
-void ArgumentList()   :
+void ArgumentList() #void  :
 {}
 {
   [
@@ -242,34 +242,34 @@ void ArgumentList()   :
   ]
 }
 
-void Argument()   :
+void Argument()  #void :
 {}
 {
-  Type() < IDENTIFIER >
+  Type() Identifier()
 }
 
-void MainMethod()   :
+void MainMethod() :
 {}
 {
-  < PUBLIC > < STATIC > < VOID > < MAIN > < LPAR > < STRING > < LSQUARE > < RSQUARE > < IDENTIFIER > < RPAR > 
+  < PUBLIC > < STATIC > < VOID > < MAIN > < LPAR > < STRING > < LSQUARE > < RSQUARE > Identifier() < RPAR > 
   < LCURLY > VariableDeclarations() StatementDeclarations() < RCURLY >
 }
 
-void Type()   :
+void Type() #void :
 {}
 {
   (
-    < INT > < LSQUARE > < RSQUARE >
+    < INT > < LSQUARE > < RSQUARE > #IntArray
   | 
-    < BOOLEAN >
+    < BOOLEAN > #Bool
   | 
-    < INT >
+    < INT > #Int
   | 
-    < IDENTIFIER >
+  Identifier()
   )
 }
 
-void StatementDeclarations()   :
+void StatementDeclarations()  #void :
 {}
 {
   (
@@ -277,30 +277,55 @@ void StatementDeclarations()   :
   )*
 }
 
-void Statement()   :
+void Statement() #void  :
 {}
 {
     (
       < LCURLY > StatementDeclarations() < RCURLY >
     | 
-      < IF > < LPAR > Expression() < RPAR > Statement() 
-      < ELSE > Statement()
+      If()Then()
+      Else()
     | 
       While()
     |
-      < IDENTIFIER > < LSQUARE > Expression() < RSQUARE > < EQUALS > Expression() < SEMICOLON >
-    |
-    < IDENTIFIER > < EQUALS > Expression() < SEMICOLON >
+      Equals()
     |
     Expression() <SEMICOLON>
     )
 
 }
 
+void If() : {}
+{
+  < IF > < LPAR >  Expression() < RPAR > 
+}
+
+void Then() :{}
+{
+  Statement() 
+}
+
+void Else() : {}
+{
+  < ELSE > Statement()
+}
+
+
+void Equals() : {}
+{
+  Identifier() < LSQUARE > #LSQUARE Expression() < RSQUARE > #RSQUARE < EQUALS > EqualsExpression() < SEMICOLON >
+  |Identifier() < EQUALS > EqualsExpression() < SEMICOLON >
+}
+
+void EqualsExpression() : {}
+{
+  Expression() 
+}
+
 void While()   : {}
 {
   try{
-    < WHILE > < LPAR > Expression() < RPAR >
+    < WHILE > < LPAR > WhileExpression() < RPAR >
   }
   catch(ParseException e) {
     System.out.println("While error detected");
@@ -310,84 +335,110 @@ void While()   : {}
   Statement()
 }
 
-void Expression()   :
+void WhileExpression()  :
 {}
 {
-  Term1() [ < AND > Expression() ]
+  Expression()
 }
 
-void Term1()   :
+void Expression()  #void :
 {}
 {
-  Term2() [ < LESSTHAN > Expression() ]
+  Term1() [ < AND > #AND Expression() ] 
 }
 
-void Term2()   :
+void Term1()  #void :
 {}
 {
-  Term3() [ < ADD > Expression() ]
+  Term2() [ < LESSTHAN > #LESSTHAN Expression() ] 
 }
 
-void Term3()   :
+void Term2()  #void :
 {}
 {
-  Term4() [ < SUB > Expression() ]
+  Term3() [ < ADD > #ADD Expression() ]
 }
 
-void Term4()   :
+void Term3()  #void :
 {}
 {
-  Term5() [ < MUL > Expression() ]
+  Term4() [ < SUB > #SUB Expression() ]
 }
 
-void Term5()   :
+void Term4()  #void :
 {}
 {
-  Term6() [ < DIV > Expression() ]
+  Term5() [ < MUL > #MUL Expression() ]
 }
 
-void Term6()   :
+void Term5() #void  :
 {}
 {
-  Term7() [ < LSQUARE > Expression() < RSQUARE > ]
+  Term6() [ < DIV > #DIV Expression() ]
 }
 
-void Term7()   :
+void Term6() #void  :
 {}
 {
-  Term8() [ < DOT > < LENGTH > ]
+  Term7() [ < LSQUARE > #LSQUARE Expression() <RSQUARE> #RSQUARE ]
 }
 
-void Term8()   :
+void Term7()#void   :
 {}
 {
-  Term9()  [ < DOT > < IDENTIFIER > < LPAR >
+  Term8() [ < DOT > < LENGTH > #LENGTH ]
+}
+
+void Term8()  #void :
+{}
+{
+  Term9()  [ < DOT >  Identifier() < LPAR >
   (
-    Expression() ( < COMMA > Expression())*
+    ArgumentCall()
   )?
-  < RPAR > ]
+  < RPAR >]
 }
 
-void Term9()   :
+void ArgumentCall() : {}
+{
+  Expression() ( < COMMA > #COMMA Expression())*
+}
+
+void Term9() #void :
 {}
 {
   (
-    < INTEGERLITERAL >
+    IntLiteral() 
   | 
-    < TRUE >
+    < TRUE > #TRUE
   | 
-    < FALSE >
+    < FALSE > #FALSE
   | 
-    < IDENTIFIER >
+    Identifier()
   | 
-    < THIS >
+    < THIS > #THIS
   | 
-    < NEW > < INT > < LSQUARE > Expression() < RSQUARE >
+     NewInt()
   | 
-    < NEW > < IDENTIFIER > < LPAR > < RPAR >
+    < NEW > #NEW Identifier() < LPAR > < RPAR > 
   | 
-    < NOT > Expression()
+    < NOT > #NOT Expression()
   | 
-    < LPAR > Expression() < RPAR >
+    < LPAR >  Expression() < RPAR >
   )
+}
+
+void IntLiteral() : {Token t;}
+{
+  t=< INTEGERLITERAL > { jjtThis.jjtSetValue(t.image); }
+}
+
+void Identifier() : {Token t;}
+{
+  t=< IDENTIFIER > { jjtThis.jjtSetValue(t.image); }
+}
+
+void NewInt() : {Token t3, t4;}
+{
+  (< NEW > < INT > t3=< LSQUARE >  Expression() t4=< RSQUARE >) { jjtThis.jjtSetValue(t3.image + t4.image); }
 }

@@ -1,6 +1,7 @@
 options
 {
   LOOKAHEAD= 1;
+  MULTI=true;
 }
 
 PARSER_BEGIN(Parser)
@@ -404,33 +405,23 @@ void LessThan() : {}
 void Term2() #void :
 {}
 {
- Term3() ( Add() | Sub() )*
+  Term3() AddSub()
 }
 
-void Add() : {}
+void AddSub() : {}
 {
- < ADD > Term3() 
-}
-
-void Sub() : {}
-{
-  <SUB> Term3()
+ (LOOKAHEAD(2 )( < ADD > | < SUB > ) Term3() )*
 }
 
 void Term3()  #void :
 {}
 {
-  Term6() ( Mul() | Div())*
+  Term6() MulDiv()
 }
 
-void Mul() : {}
+void MulDiv() : {}
 {
-  < MUL > Term6()
-}
-
-void Div() : {}
-{
-  <DIV> Term6()
+  (LOOKAHEAD(2)(  < MUL > | <DIV> ) Term6() ) *
 }
 
 void Term6() #void  :

@@ -39,6 +39,10 @@ public class Parser
     if(errorCount < 10){
       throw new ParseException();
     }
+
+    // root.buildSymbolTable();
+    // root.semanticAnalysis();
+    // root.codeGeneration();
   }
 }
 
@@ -190,10 +194,12 @@ void ImportDeclarations() #void :
   )*
 }
 
-void Import()  :
-{}
-{
-  < IMPORT > File() < SEMICOLON >
+void Import(): {Token t;}{
+  <IMPORT> [<STATIC> ] Identifier() [<DOT> Identifier() ] [ <LPAR> ParamList() <RPAR> [Type() | <VOID>#Void] ] <SEMICOLON>
+}
+
+void ParamList(): {}{
+    [(Type() | <VOID>)  (<COMMA> (Type() | <VOID>))*]
 }
 
 void File() #void :

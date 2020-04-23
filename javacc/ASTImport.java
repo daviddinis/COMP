@@ -11,4 +11,4 @@ class ASTImport extends SimpleNode {
   }
 
 }
-/* JavaCC - OriginalChecksum=825206a276781b28aa0bbf24df069d86 (do not edit this line) */
+/* JavaCC - OriginalChecksum=102b8623e78d8554f34992788a15d8e1 (do not edit this line) */

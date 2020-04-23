@@ -11,4 +11,4 @@ class ASTThen extends SimpleNode {
   }
 
 }
-/* JavaCC - OriginalChecksum=21c186c28190870dbe68c22a21db89ef (do not edit this line) */
+/* JavaCC - OriginalChecksum=630323c7bf8ddc7043b85c59f1bf710d (do not edit this line) */

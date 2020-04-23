@@ -10,5 +10,29 @@ class ASTMethod extends SimpleNode {
     super(p, id);
   }
 
+  public void createSymbolTable(SymbolTable symbolTable) {
+    SymbolTable newTable = new SymbolTable(symbolTable);
+
+    String methodName = ((SimpleNode)children[1]).name + "(";
+
+        for (int i = 0; i < children.length; i++) {
+            if (children[i] instanceof ASTArgument) {
+                methodName += ((ASTType)((ASTArgument)children[i]).children[0]).getType();
+            }
+        }
+
+        methodName += ")";
+
+    parser.addMethod(methodName, newTable);
+
+
+    if (children == null) return;
+
+    for (int i = 0; i < children.length; i++) {
+      ((SimpleNode) children[i]).createSymbolTable(newTable);
+    }
+  }
+
+
 }
-/* JavaCC - OriginalChecksum=db4699299518e6b9157b9fb238756709 (do not edit this line) */
+/* JavaCC - OriginalChecksum=e01bdf01dd9e8aa606ef225a59a26df3 (do not edit this line) */

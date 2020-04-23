@@ -11,4 +11,4 @@ class ASTNEW extends SimpleNode {
   }
 
 }
-/* JavaCC - OriginalChecksum=d71104f77e4f35d19bb312fd64bbeec5 (do not edit this line) */
+/* JavaCC - OriginalChecksum=7a0fe874174dc351abb16b01ef943ed2 (do not edit this line) */

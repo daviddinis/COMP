@@ -11,4 +11,4 @@ class ASTLENGTH extends SimpleNode {
   }
 
 }
-/* JavaCC - OriginalChecksum=2a71d37a8b048056bb09fedbe30398f3 (do not edit this line) */
+/* JavaCC - OriginalChecksum=9340b1c9d0f3a7601be1ff8cdf1361a0 (do not edit this line) */

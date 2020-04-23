@@ -8,11 +8,26 @@ PARSER_BEGIN(Parser)
 
 import java.io.FileNotFoundException;
 import java.io.*;
+import java.util.HashMap;
 
 public class Parser
 {
   static private int errorCount = 10;
   static private int MAX_ERROR_COUNT = 10;
+  private SymbolTable classTable = new SymbolTable();
+  private HashMap<String, SymbolTable> methods = new HashMap<String, SymbolTable>();
+  
+  public SymbolTable getclassTable(){
+    return this.classTable;
+  }
+
+  public void addMethod(String name, SymbolTable table){
+    this.methods.put(name, table);
+  }
+
+  public SymbolTable getTable(String id){
+    return this.methods.get(id);
+  }
 
   public static void main(String args []) throws ParseException
   {
@@ -23,7 +38,7 @@ public class Parser
     if(args.length == 1) {
       try {
 		    java.io.FileInputStream file = new java.io.FileInputStream(new java.io.File(args[0]));
-	      parser = new Parser(file);
+        parser = new Parser(file);
       } catch (FileNotFoundException e) {
         System.out.println(e);
         return;
@@ -35,6 +50,7 @@ public class Parser
 
     SimpleNode root = parser.Program();
     root.dump("");
+
 
     if(errorCount < 10){
       throw new ParseException();
@@ -286,7 +302,7 @@ void ArgumentList() #void  :
   ]
 }
 
-void Argument()  #void :
+void Argument() :
 {}
 {
   Type() Identifier()
@@ -358,7 +374,7 @@ void Else() : {}
 void Equals() : {}
 {
   Identifier()
-    (< LSQUARE > #LSQUARE Expression() < RSQUARE > #RSQUARE < EQUALS > EqualsExpression() < SEMICOLON >
+    (< LSQUARE >  Expression() < RSQUARE > < EQUALS > EqualsExpression() < SEMICOLON >
     | < EQUALS > EqualsExpression() < SEMICOLON >)
 }
 
@@ -367,15 +383,15 @@ void EqualsExpression() : {}
   Expression() 
 }
 
-void While()   : {}
+void While() #void : {Token t;}
 {
   try{
-    < WHILE > < LPAR > WhileExpression() < RPAR >
+    t=< WHILE > < LPAR > WhileExpression() < RPAR >
   }
   catch(ParseException e) {
     System.out.println("While error detected");
-    whileError(e);
-    skipto_while_expression();
+    whileError(e); 
+    skipto_while_expression(); 
   }
   Statement()
 }
@@ -433,7 +449,7 @@ void MulDiv() : {}
 void Term6() #void  :
 {}
 {
-  Term7() [ LOOKAHEAD(2) < LSQUARE > #LSQUARE Expression() <RSQUARE> #RSQUARE ]
+  Term7() [ LOOKAHEAD(2) < LSQUARE > Expression() <RSQUARE> ]
 }
 
 void Term7()#void   :
@@ -454,7 +470,7 @@ void Term8()  #void :
 
 void ArgumentCall() : {}
 {
-  Expression() ( < COMMA > #COMMA Expression())*
+  Expression() ( < COMMA > Expression())*
 }
 
 void Term9() #void :

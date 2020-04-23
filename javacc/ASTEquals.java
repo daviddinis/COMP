@@ -11,4 +11,4 @@ class ASTEquals extends SimpleNode {
   }
 
 }
-/* JavaCC - OriginalChecksum=656ba0e09391bb237c581f3613f7a06c (do not edit this line) */
+/* JavaCC - OriginalChecksum=d522411537ae4a0e31477e9f193c7a0c (do not edit this line) */

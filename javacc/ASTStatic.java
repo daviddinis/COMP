@@ -11,4 +11,4 @@ class ASTStatic extends SimpleNode {
   }
 
 }
-/* JavaCC - OriginalChecksum=f04b9391fc2414c6ef1d9a617c6ecd24 (do not edit this line) */
+/* JavaCC - OriginalChecksum=e0a8dc0e42602618c9fbdf43e11dfcc5 (do not edit this line) */

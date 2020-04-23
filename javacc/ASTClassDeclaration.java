@@ -11,4 +11,4 @@ class ASTClassDeclaration extends SimpleNode {
   }
 
 }
-/* JavaCC - OriginalChecksum=d38a7b33c720e14fcf8f4db295d31bcb (do not edit this line) */
+/* JavaCC - OriginalChecksum=a262ba2abf85183e715db1909b2e6512 (do not edit this line) */

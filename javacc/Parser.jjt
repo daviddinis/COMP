@@ -467,7 +467,7 @@ void Term9() #void :
   | 
     < FALSE > #FALSE
   | 
-    LOOKAHEAD(2) Identifier()
+    Identifier()
   | 
     < THIS > #THIS
   | 

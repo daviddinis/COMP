@@ -13,8 +13,7 @@ class ASTArgument extends SimpleNode {
 
   public void createSymbolTable(SymbolTable symbolTable){
     String type;
-    ASTIdentifier varType = ((ASTIdentifier)children[0]);
-    type = varType.getType();
+    type = type = ((ASTType)children[0]).getType();
     Symbol symbol = new Symbol(type, ((ASTIdentifier)children[1]).getName());
     symbolTable.addSymbol(symbol);
   }

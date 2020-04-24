@@ -13,5 +13,14 @@ class ASTIntArray extends SimpleNode implements ASTType{
   public String getType(){
     return "Int[]";
   }
+
+  public String analyzeType(SymbolTable table) {
+    String type1 = ((SimpleNode) children[0]).analyzeType(table);
+    String type2 = ((SimpleNode) children[1]).analyzeType(table);
+    if(!type1.equals("Int[]") || !type2.equals("Int")) {
+      return "";
+    }
+    return "Int";
+  }
 }
 /* JavaCC - OriginalChecksum=b85538713c87a1c3191d52072cfc78dd (do not edit this line) */

@@ -10,5 +10,14 @@ class ASTLessThan extends SimpleNode {
     super(p, id);
   }
 
+  public String analyzeType(SymbolTable table) {
+    String type1 = ((SimpleNode)children[0]).analyzeType(table);
+    String type2 = ((SimpleNode)children[1]).analyzeType(table);
+    if(type1.equals("Int") && type2.equals("Int")) {
+      return "Bool";
+    }
+    else return "";
+  }
+
 }
 /* JavaCC - OriginalChecksum=c0d8a8972c0a4b4df64282733df15850 (do not edit this line) */

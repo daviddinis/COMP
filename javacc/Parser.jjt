@@ -2,6 +2,7 @@ options
 {
   LOOKAHEAD= 1;
   MULTI=true;
+  NODE_SCOPE_HOOK=true;
 }
 
 PARSER_BEGIN(Parser)
@@ -33,6 +34,12 @@ public class Parser
     return this.methods.get(id);
   }
 
+  public static void jjtreeOpenNodeScope(Node n) {
+    // ((SimpleNode) n).setLine(getToken(1).beginLine);
+  }
+
+  public static void jjtreeCloseNodeScope(Node n) {}
+
   public static void main(String args []) throws ParseException
   {
     Parser parser;
@@ -55,7 +62,7 @@ public class Parser
  
     SimpleNode root = parser.Program();
     root.dump("");
-    root.createSymbolTable(parser.getclassTable());
+     root.createSymbolTable(parser.getclassTable());
     //System.out.println(parser.getclassTable().toString());
     if(errorCount < 10){
       throw new ParseException();
@@ -379,52 +386,57 @@ void Else() : {}
 void Equals() : {}
 {
   Identifier()
-    (< LSQUARE >  Expression() < RSQUARE > < EQUALS > EqualsExpression() < SEMICOLON >
-    | < EQUALS > EqualsExpression() < SEMICOLON >)
+    [< LSQUARE >  Expression() #IntArray(2)< RSQUARE >] < EQUALS > EqualsExpression() < SEMICOLON >
 }
 
-void EqualsExpression() : {}
+void EqualsExpression() #void : {}
 {
   Expression() 
 }
 
-void While() #void : {Token t;}
+void While() #void : {}
 {
   try{
-    t=< WHILE > < LPAR > WhileExpression() < RPAR >
+    < WHILE > < LPAR > WhileExpression() < RPAR > 
   }
   catch(ParseException e) {
     System.out.println("While error detected");
     whileError(e); 
     skipto_while_expression(); 
   }
-  Statement()
+  WhileBody()#While(2)
 }
 
-void WhileExpression()  :
+void WhileExpression() :
 {}
 {
   Expression()
 }
 
+void WhileBody() :
+{}
+{
+  Statement()
+}
+
 void Expression()  #void :
 {}
 {
-  Term1() ( LOOKAHEAD(2) And() )*
+  Term1() ( LOOKAHEAD(2) And() #And(2) )*
 }
 
-void And() : {}
+void And() #void : {}
 {
-  < AND > Term1()
+  < AND >  Term1()
 }
 
 void Term1() #void :
 {}
 {
-  Term2() ( LOOKAHEAD(2) LessThan() )* 
+  Term2() ( LOOKAHEAD(2) LessThan() #LessThan(2) )* 
 }
 
-void LessThan() : {}
+void LessThan() #void : {}
 {
   < LESSTHAN > Term2()
 }
@@ -432,29 +444,29 @@ void LessThan() : {}
 void Term2() #void :
 {}
 {
-  Term3() AddSub()
+  Term3() (LOOKAHEAD(2) AddSub() #AddSub(2) )*
 }
 
-void AddSub() : {}
+void AddSub() #void : {}
 {
- (LOOKAHEAD(2 )( < ADD > | < SUB > ) Term3() )*
+ ( < ADD > | < SUB > ) Term3()
 }
 
 void Term3()  #void :
 {}
 {
-  Term6() MulDiv()
+  Term6() (LOOKAHEAD(2) MulDiv() #MulDiv(2) ) *
 }
 
-void MulDiv() : {}
+void MulDiv() #void : {}
 {
-  (LOOKAHEAD(2)(  < MUL > | <DIV> ) Term6() ) *
+  (  < MUL > | <DIV> ) Term6() 
 }
 
 void Term6() #void  :
 {}
 {
-  Term7() [ LOOKAHEAD(2) < LSQUARE > Expression() <RSQUARE> ]
+  Term7() [ LOOKAHEAD(2) < LSQUARE > Expression() #IntArray(2) <RSQUARE> ]
 }
 
 void Term7()#void   :

@@ -10,5 +10,13 @@ class ASTAddSub extends SimpleNode {
     super(p, id);
   }
 
+  public String analyzeType(SymbolTable table) {
+    String type1 = ((SimpleNode)children[0]).analyzeType(table);
+    String type2 = ((SimpleNode)children[1]).analyzeType(table);
+    if(type1.equals("Int") && type2.equals("Int")) {
+      return "Int";
+    }
+    else return "";
+  }
 }
 /* JavaCC - OriginalChecksum=ea57c935fea2f4c98db97d30641ddaa7 (do not edit this line) */

@@ -10,5 +10,14 @@ class ASTAnd extends SimpleNode {
     super(p, id);
   }
 
+  public String analyzeType(SymbolTable table) {
+    // verify right side
+    String type1 = ((SimpleNode)children[0]).analyzeType(table);
+    String type2 = ((SimpleNode)children[1]).analyzeType(table);
+    if(type1.equals("Bool") && type2.equals("Bool")) {
+      return "Bool";
+    }
+    else return "";
+  }
 }
 /* JavaCC - OriginalChecksum=1766d5431be81e19119cf5feee80cd49 (do not edit this line) */

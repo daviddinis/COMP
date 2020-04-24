@@ -10,5 +10,13 @@ class ASTEquals extends SimpleNode {
     super(p, id);
   }
 
+  public void analyzeSemantics(SymbolTable table) {
+    String type1 = ((SimpleNode) children[0]).analyzeType(table);
+    String type2 = ((SimpleNode) children[1]).analyzeType(table);
+    if(!type1.equals(type2)) {
+      System.err.println("Assignment expression in line " + getLine() + " is not valid!");
+    }
+  }
+
 }
 /* JavaCC - OriginalChecksum=d522411537ae4a0e31477e9f193c7a0c (do not edit this line) */

@@ -11,6 +11,8 @@ class SimpleNode implements Node {
   protected Object value;
   protected Parser parser;
   protected String name = null;
+  protected int line;
+
 
   public SimpleNode(int i) {
     id = i;
@@ -85,7 +87,7 @@ class SimpleNode implements Node {
     System.out.println(toString(prefix));
     if (children != null) {
       for (int i = 0; i < children.length; ++i) {
-        SimpleNode n = (SimpleNode)children[i];
+        SimpleNode n = ((SimpleNode)children[i]);
         if (n != null) {
           n.dump(prefix + "   ");
         }
@@ -97,6 +99,14 @@ class SimpleNode implements Node {
     return id;
   }
 
+  public int getLine() {
+    return line;
+  }
+
+  public void setLine(int l) {
+    line = l;
+  }
+
   public void createSymbolTable(SymbolTable symbolTable){
     if (children == null) return;
 
@@ -104,6 +114,19 @@ class SimpleNode implements Node {
       ((SimpleNode) children[i]).createSymbolTable(symbolTable);
     }
   }
+  
+  public void analyzeSemantics(SymbolTable symbolTable){
+    if (children == null) return;
+
+    for (int i = 0; i < children.length; i++){
+      ((SimpleNode) children[i]).analyzeSemantics(symbolTable);
+    }
+  }
+
+  public String analyzeType(SymbolTable table) {
+    return "";
+  }
+
   
 }
 

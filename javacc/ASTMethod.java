@@ -21,11 +21,13 @@ class ASTMethod extends SimpleNode {
         for (int i = 0; i < children.length; i++) {
             if (children[i] instanceof ASTArgument) {
                 methodName += ((ASTType)((ASTArgument)children[i]).children[0]).getType();
+                methodName += ",";
             }
         }
 
         methodName += ")";
 
+        methodName += " " + ((ASTType)children[0]).getType();
     parser.addMethod(methodName, newTable);
 
     for (int i = 0; i < children.length; i++) {

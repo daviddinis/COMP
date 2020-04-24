@@ -1,4 +1,5 @@
-import java.util.HashMap;
+import java.util.*;
+
 
 public class SymbolTable {
 
@@ -25,5 +26,14 @@ public class SymbolTable {
         }else{
             return null;
         }
+    }
+
+    public String toString(){
+        ArrayList<String> keys = new ArrayList<String>(table.keySet());
+        String allKeys = new String();
+        for (int i = 0; i< keys.size() ; i++){
+            allKeys += keys.get(i) + " ";
+        }
+        return allKeys;
     }
 }

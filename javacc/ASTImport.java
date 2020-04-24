@@ -3,15 +3,20 @@
 public class ASTImport extends SimpleNode {
 
   public boolean isStatic;
-
+  public boolean dot;
+  public boolean returnType;
   public ASTImport(int id) {
     super(id);
     isStatic = false;
+    dot = false;
+    returnType =false;
   }
 
   public ASTImport(Parser p, int id) {
     super(p, id);
     isStatic = false;
+    dot = false;
+    returnType = false;
   }
 
   public void createSymbolTable(SymbolTable symbolTable) {
@@ -22,22 +27,33 @@ public class ASTImport extends SimpleNode {
       String methodName = new String();
       int i = 1;
       if (isStatic) {
-        methodName += "static";
+        methodName += "static ";
         i = 2;
+      }
+
+      methodName += ((ASTIdentifier)children[i]).getName();
+      if (dot){
+        i+=2;
+        methodName += "." + ((ASTIdentifier)children[i]).getName();
+        i++;
       }
 
       for (; i < children.length; i++) {
 
-          if(children[i] instanceof AST)
-          methodName += ((ASTType) ((ASTArgument) children[i]).children[0]).getType();
+          if(children[i] instanceof ASTParamList){
+            methodName += "(";
+            for(int k = 0; k< ((SimpleNode)children[i]).children.length;k+=2){
+              methodName += ((ASTType) ((SimpleNode)children[i]).children[k]).getType();
+              methodName += ",";
+            }
+            methodName += ")";
+          }
+          else if(returnType){
+            methodName += " " + ((ASTType) children[i]).getType();
+          }
       }
-
-      methodName += ")";
       parser.addMethod(methodName, newTable);
 
-      for (int i = 0; i < children.length; i++) {
-        ((SimpleNode) children[i]).createSymbolTable(newTable);
-      }
     }
   }
 

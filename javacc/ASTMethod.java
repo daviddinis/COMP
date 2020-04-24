@@ -11,6 +11,9 @@ class ASTMethod extends SimpleNode {
   }
 
   public void createSymbolTable(SymbolTable symbolTable) {
+
+    if (children == null) return;
+
     SymbolTable newTable = new SymbolTable(symbolTable);
 
     String methodName = ((SimpleNode)children[1]).name + "(";
@@ -24,9 +27,6 @@ class ASTMethod extends SimpleNode {
         methodName += ")";
 
     parser.addMethod(methodName, newTable);
-
-
-    if (children == null) return;
 
     for (int i = 0; i < children.length; i++) {
       ((SimpleNode) children[i]).createSymbolTable(newTable);

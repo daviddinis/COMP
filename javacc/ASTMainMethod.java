@@ -11,8 +11,8 @@ public class ASTMainMethod extends SimpleNode {
 
   public void createSymbolTable(SymbolTable symbolTable) {
     SymbolTable newTable = new SymbolTable(symbolTable);
-    parser.addMethod("main", newTable);
-    Symbol symbol = new Symbol("String[]", ((ASTIdentifier) children[7]).getName());
+    Parser.getInstance().addMethod("main", newTable);
+    Symbol symbol = new Symbol("String[]", ((ASTIdentifier) children[0]).getName());
     newTable.addSymbol(symbol);
 
     if (children == null) return;

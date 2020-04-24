@@ -5,11 +5,12 @@ public class ASTImport extends SimpleNode {
   public boolean isStatic;
   public boolean dot;
   public boolean returnType;
+
   public ASTImport(int id) {
     super(id);
     isStatic = false;
     dot = false;
-    returnType =false;
+    returnType = false;
   }
 
   public ASTImport(Parser p, int id) {
@@ -25,34 +26,34 @@ public class ASTImport extends SimpleNode {
 
       SymbolTable newTable = new SymbolTable(symbolTable);
       String methodName = new String();
-      int i = 1;
       if (isStatic) {
         methodName += "static ";
-        i = 2;
       }
 
-      methodName += ((ASTIdentifier)children[i]).getName();
-      if (dot){
-        i+=2;
-        methodName += "." + ((ASTIdentifier)children[i]).getName();
-        i++;
+      methodName += ((ASTIdentifier) children[0]).getName();
+      if (dot) {
+        methodName += "." + ((ASTIdentifier) children[1]).getName();
       }
+      methodName += "(";
+      for (int i = 0; i < children.length; i++) {
+        if (children[i] instanceof ASTParamList) {
+          if (((ASTParamList) children[i]).children != null) {
+            methodName += ((ASTType) ((ASTParamList) children[i]).children[0]).getType();
 
-      for (; i < children.length; i++) {
-
-          if(children[i] instanceof ASTParamList){
-            methodName += "(";
-            for(int k = 0; k< ((SimpleNode)children[i]).children.length;k+=2){
-              methodName += ((ASTType) ((SimpleNode)children[i]).children[k]).getType();
+            for (int k = 1; k < ((ASTParamList) children[i]).children.length; k++) {
               methodName += ",";
+              methodName += ((ASTType) ((ASTParamList) children[i]).children[k]).getType();
             }
-            methodName += ")";
           }
-          else if(returnType){
-            methodName += " " + ((ASTType) children[i]).getType();
+          methodName += ") ";
+          if (returnType) {
+            methodName += ((ASTType) children[i + 1]).getType();
           }
+          break;
+        }
       }
-      parser.addMethod(methodName, newTable);
+
+      Parser.getInstance().addMethod(methodName, newTable);
 
     }
   }

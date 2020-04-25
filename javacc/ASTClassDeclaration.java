@@ -10,6 +10,24 @@ class ASTClassDeclaration extends SimpleNode {
     super(p, id);
   }
 
+
+  public void createSymbolTable(SymbolTable symbolTable) {
+    if (children == null){
+      return;
+    }
+    if(children[0] instanceof ASTExtends){
+      Parser.getInstance().className = ((ASTIdentifier)((ASTExtends)children[0]).children[0]).getName();
+      Parser.getInstance().extend = ((ASTIdentifier)((ASTExtends)children[0]).children[1]).getName();
+    }else {
+      Parser.getInstance().className = ((ASTIdentifier)children[0]).getName();
+    }
+
+    for (int i = 0; i < children.length; i++) {
+      ((SimpleNode) children[i]).createSymbolTable(symbolTable);
+    }
+  }
+
+
   public void analyzeSemantics(SymbolTable table) {
     for (int i = 0; i< children.length; i++) {
       if (children[i] instanceof ASTMethod || children[i] instanceof ASTMainMethod) {

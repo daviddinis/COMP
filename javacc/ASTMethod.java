@@ -22,14 +22,14 @@ public class ASTMethod extends SimpleNode {
       if (children[i] instanceof ASTArgument) {
         for (int k = 0; k<((ASTArgument) children[i]).children.length; k++ ){
           methodName += ((ASTType) ((ASTArgument) children[i]).children[k]).getType();
+          if (k != ((ASTArgument) children[i]).children.length-1)
           methodName += ",";
         }
       }
     }
-
     methodName += ")";
 
-    methodName += " " + ((ASTType) children[0]).getType();
+    newTable.setReturnType(((ASTType) children[0]).getType());
     Parser.getInstance().addMethod(methodName, newTable);
     this.table = newTable;
 

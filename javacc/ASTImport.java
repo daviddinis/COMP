@@ -47,7 +47,7 @@ public class ASTImport extends SimpleNode {
           }
           methodName += ") ";
           if (returnType) {
-            methodName += ((ASTType) children[i + 1]).getType();
+            newTable.setReturnType(((ASTType) children[i + 1]).getType());
           }
           break;
         }

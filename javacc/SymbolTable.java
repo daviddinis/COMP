@@ -5,6 +5,7 @@ public class SymbolTable {
 
     private HashMap<String, Symbol> table = new HashMap<String, Symbol>();
     private SymbolTable parent;
+    private String returnType;
 
     public SymbolTable(SymbolTable parent){
         this.parent = parent;
@@ -13,6 +14,13 @@ public class SymbolTable {
         this.parent = null;
     }
 
+    public String getReturnType(){
+        return returnType;
+    }
+
+    public void setReturnType(String type){
+        this.returnType = type;
+    }
 
     public void addSymbol(Symbol symbol){
         table.put(symbol.getId(), symbol);

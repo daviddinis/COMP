@@ -10,35 +10,45 @@ public class ASTfunction extends SimpleNode {
   }
 
   public String analyzeType(SymbolTable table) {
-    if (((ASTIdentifier)children[0]).getName() == "this" || table.getSymbol(((ASTIdentifier)children[0]).getName()).getType() == Parser.getInstance().className) {
-      String methodName = ((ASTIdentifier)children[1]).getName();
+    Boolean primeiro = ((SimpleNode) children[0]).analyzeType(table).equals("this");
+    Boolean segundo = ((SimpleNode) children[0]).analyzeType(table).equals(Parser.getInstance().className);
+    System.out.println(((SimpleNode) children[0]).analyzeType(table));
+    if (primeiro || segundo) {
+      String methodName = ((ASTIdentifier) children[1]).getName();
       methodName += "(";
-      for(int i = 0; i< ((ASTArgumentCall)children[2]).children.length; i++){
-        methodName += ((SimpleNode)((ASTArgumentCall)children[2]).children[i]).analyzeType(table);
-        if (i != ((ASTArgumentCall)children[2]).children.length-1)
-        methodName += ",";
+      if (((ASTArgumentCall) children[2]).children != null) {
+        System.out.println("if");
+        for (int i = 0; i < ((ASTArgumentCall) children[2]).children.length; i++) {
+          methodName += ((SimpleNode) ((ASTArgumentCall) children[2]).children[i]).analyzeType(table);
+          System.out.println(((SimpleNode) ((ASTArgumentCall) children[2]).children[i]).analyzeType(table));
+          if (i != ((ASTArgumentCall) children[2]).children.length - 1)
+            methodName += ",";
+        }
       }
       methodName += ")";
-
-      if (Parser.getInstance().getTable(methodName) != null){
+      System.out.println(methodName);
+      if (Parser.getInstance().getTable(methodName) != null) {
         return Parser.getInstance().getTable(methodName).getReturnType();
-      }
-      else if(Parser.getInstance().extend != null && Parser.getInstance().getTable(Parser.getInstance().extend + "." + methodName)!= null){
+      } else if (Parser.getInstance().extend != null
+          && Parser.getInstance().getTable(Parser.getInstance().extend + "." + methodName) != null) {
         return Parser.getInstance().getTable(Parser.getInstance().extend + "." + methodName).getReturnType();
-      }else
-      return "";
-    }else{
-      String methodName = ((ASTIdentifier)children[0]).getName() + ".";
-      methodName += ((ASTIdentifier)children[1]).getName() + "(";
-      for(int i = 0; i< ((ASTArgumentCall)children[2]).children.length; i++){
-        methodName += ((SimpleNode)((ASTArgumentCall)children[2]).children[i]).analyzeType(table);
-        if (i != ((ASTArgumentCall)children[2]).children.length-1)
-        methodName += ",";
+      } else
+        System.out.println("nulo");
+        return "";
+    } else {
+      String methodName = ((SimpleNode) children[0]).analyzeType(table) + ".";
+      methodName += ((ASTIdentifier) children[1]).getName() + "(";
+      if (((ASTArgumentCall) children[2]).children != null) {
+        for (int i = 0; i < ((ASTArgumentCall) children[2]).children.length; i++) {
+          methodName += ((SimpleNode) ((ASTArgumentCall) children[2]).children[i]).analyzeType(table);
+          if (i != ((ASTArgumentCall) children[2]).children.length - 1)
+            methodName += ",";
+        }
       }
       methodName += ")";
-      if (Parser.getInstance().getTable(methodName) != null){
+      if (Parser.getInstance().getTable(methodName) != null) {
         return Parser.getInstance().getTable(methodName).getReturnType();
-      }else{
+      } else {
         return "";
       }
     }

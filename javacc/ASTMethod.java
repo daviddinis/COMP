@@ -16,13 +16,13 @@ public class ASTMethod extends SimpleNode {
 
     SymbolTable newTable = new SymbolTable(symbolTable);
 
-    String methodName = ((SimpleNode) children[1]).name + "(";
+    String methodName = ((ASTIdentifier) children[1]).getName() + "(";
 
     for (int i = 0; i < children.length; i++) {
       if (children[i] instanceof ASTArgument) {
-        for (int k = 0; k<((ASTArgument) children[i]).children.length; k++ ){
+        for (int k = 0; k<((ASTArgument) children[i]).children.length; k+=2 ){
           methodName += ((ASTType) ((ASTArgument) children[i]).children[k]).getType();
-          if (k != ((ASTArgument) children[i]).children.length-1)
+          if (k != ((ASTArgument) children[i]).children.length-2)
           methodName += ",";
         }
       }

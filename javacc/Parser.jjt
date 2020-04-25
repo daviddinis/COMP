@@ -8,7 +8,7 @@ PARSER_BEGIN(Parser)
 
 import java.io.FileNotFoundException;
 import java.io.*;
-import java.util.HashMap;
+import java.util.*;
 
 public class Parser
 {
@@ -29,6 +29,13 @@ public class Parser
 
   public void addMethod(String name, SymbolTable table){
     this.methods.put(name, table);
+  }
+
+  public void getKeys(){
+    Set<String> met = methods.keySet();
+    for(String key: met){
+        System.out.println(key);
+    }
   }
 
   public SymbolTable getTable(String id){

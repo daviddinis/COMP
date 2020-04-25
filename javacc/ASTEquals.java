@@ -13,6 +13,7 @@ class ASTEquals extends SimpleNode {
   public void analyzeSemantics(SymbolTable table) {
     String type1 = ((SimpleNode) children[0]).analyzeType(table);
     String type2 = ((SimpleNode) children[1]).analyzeType(table);
+    System.out.println(type1 + " " + type2);
     if(!type1.equals(type2)) {
       System.err.println("Assignment expression in line " + getLine() + " is not valid\n");
       return;

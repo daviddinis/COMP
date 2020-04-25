@@ -25,7 +25,8 @@ public class ASTMainMethod extends SimpleNode {
 
   public void analyzeSemantics(SymbolTable table) {
     for (int i = 0; i < children.length; i++) {
-      ((SimpleNode) children[i]).analyzeSemantics(this.table);
+      if (children[i] instanceof ASTStatementDeclarations)
+        ((SimpleNode) children[i]).analyzeSemantics(this.table);
     }
   }
 }

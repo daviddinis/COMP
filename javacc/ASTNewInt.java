@@ -17,5 +17,9 @@ class ASTNewInt extends SimpleNode {
     }
     return "";
   }
+
+  public boolean isInitialized(SymbolTable table) {
+    return true;
+  }
 }
 /* JavaCC - OriginalChecksum=78a29a3d2efaf93db3aedbe8ab8a6fba (do not edit this line) */

@@ -10,5 +10,12 @@ class ASTNOT extends SimpleNode {
     super(p, id);
   }
 
+  public String analyzeType(SymbolTable table) {
+    if (((SimpleNode) children[0]).analyzeType(table).equals("Bool")) {
+      return "Bool";
+    }
+    return "";
+  }
+
 }
 /* JavaCC - OriginalChecksum=16d53ed9e35a62bfcfc2dfb414cfb54a (do not edit this line) */

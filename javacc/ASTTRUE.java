@@ -10,5 +10,13 @@ class ASTTRUE extends SimpleNode {
     super(p, id);
   }
 
+  public String analyzeType(SymbolTable table) {
+    return "Bool";
+  }
+
+  public boolean isInitialized(SymbolTable table) {
+    return true;
+  }
+
 }
 /* JavaCC - OriginalChecksum=5faca07cfea9b92be7a30578746dc962 (do not edit this line) */

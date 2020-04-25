@@ -18,5 +18,9 @@ class ASTAddSub extends SimpleNode {
     }
     else return "";
   }
+
+  public boolean isInitialized(SymbolTable table) {
+    return ((SimpleNode)children[0]).isInitialized(table) && ((SimpleNode)children[1]).isInitialized(table); 
+  }
 }
 /* JavaCC - OriginalChecksum=ea57c935fea2f4c98db97d30641ddaa7 (do not edit this line) */

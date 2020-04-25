@@ -22,5 +22,9 @@ class ASTIntArray extends SimpleNode implements ASTType{
     }
     return "Int";
   }
+
+  public boolean isInitialized(SymbolTable table) {
+    return ((SimpleNode)children[0]).isInitialized(table) && ((SimpleNode)children[1]).isInitialized(table);
+  }
 }
 /* JavaCC - OriginalChecksum=b85538713c87a1c3191d52072cfc78dd (do not edit this line) */

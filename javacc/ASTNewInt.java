@@ -10,5 +10,12 @@ class ASTNewInt extends SimpleNode {
     super(p, id);
   }
 
+  public String analyzeType(SymbolTable table) {
+    String type = ((SimpleNode) children[0]).analyzeType(table);
+    if (type.equals("Int")) {
+      return "Int[]";
+    }
+    return "";
+  }
 }
 /* JavaCC - OriginalChecksum=78a29a3d2efaf93db3aedbe8ab8a6fba (do not edit this line) */

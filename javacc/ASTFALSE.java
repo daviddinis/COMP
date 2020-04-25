@@ -10,5 +10,13 @@ class ASTFALSE extends SimpleNode {
     super(p, id);
   }
 
+  public String analyzeType(SymbolTable table) {
+    return "Bool";
+  }
+
+  public boolean isInitialized(SymbolTable table) {
+    return true;
+  }
+
 }
 /* JavaCC - OriginalChecksum=3a1a8083b53cb9341688a2cd8e80d9d5 (do not edit this line) */

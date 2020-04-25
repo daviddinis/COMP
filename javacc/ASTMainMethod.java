@@ -16,9 +16,16 @@ public class ASTMainMethod extends SimpleNode {
     newTable.addSymbol(symbol);
 
     if (children == null) return;
+    this.table = newTable;
 
     for (int i = 0; i < children.length; i++) {
       ((SimpleNode) children[i]).createSymbolTable(newTable);
+    }
+  }
+
+  public void analyzeSemantics(SymbolTable table) {
+    for (int i = 0; i < children.length; i++) {
+      ((SimpleNode) children[i]).analyzeSemantics(this.table);
     }
   }
 }

@@ -2,6 +2,7 @@
 public class Symbol {
     private String type;
     private String identifier;
+    private boolean isInitialized = false;
 
     public Symbol(String type, String identifier) {
         this.type = type;
@@ -15,5 +16,13 @@ public class Symbol {
 
     public String getType(){
         return this.type;
+    }
+
+    public void initialize() {
+        isInitialized = true;
+    }
+
+    public boolean isInitialized() {
+        return isInitialized;
     }
 } 

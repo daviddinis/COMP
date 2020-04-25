@@ -10,5 +10,13 @@ class ASTClassDeclaration extends SimpleNode {
     super(p, id);
   }
 
+  public void analyzeSemantics(SymbolTable table) {
+    for (int i = 0; i< children.length; i++) {
+      if (children[i] instanceof ASTMethod || children[i] instanceof ASTMainMethod) {
+        ((SimpleNode) children[i]).analyzeSemantics(table);
+      }
+    }
+  }
+
 }
 /* JavaCC - OriginalChecksum=a262ba2abf85183e715db1909b2e6512 (do not edit this line) */

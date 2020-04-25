@@ -16,6 +16,10 @@ class ASTEquals extends SimpleNode {
     if(!type1.equals(type2)) {
       System.err.println("Assignment expression in line " + getLine() + " is not valid!");
     }
+    if (((SimpleNode) children[1]).isInitialized(table)) {
+      ((SimpleNode) children[0]).initialize(table);
+    }
+
   }
 
 }

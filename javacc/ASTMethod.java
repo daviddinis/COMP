@@ -31,12 +31,18 @@ public class ASTMethod extends SimpleNode {
 
     methodName += " " + ((ASTType) children[0]).getType();
     Parser.getInstance().addMethod(methodName, newTable);
+    this.table = newTable;
 
     for (int i = 0; i < children.length; i++) {
       ((SimpleNode) children[i]).createSymbolTable(newTable);
     }
   }
 
+  public void analyzeSemantics(SymbolTable table) {
+    for (int i = 0; i < children.length; i++) {
+      ((SimpleNode) children[i]).analyzeSemantics(this.table);
+    }
+  }
 }
 /*
  * JavaCC - OriginalChecksum=e01bdf01dd9e8aa606ef225a59a26df3 (do not edit this

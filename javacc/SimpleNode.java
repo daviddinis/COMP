@@ -12,6 +12,7 @@ class SimpleNode implements Node {
   protected Parser parser;
   protected String name = null;
   protected int line;
+  protected SymbolTable table;
 
 
   public SimpleNode(int i) {
@@ -127,7 +128,13 @@ class SimpleNode implements Node {
     return "";
   }
 
+  public boolean isInitialized(SymbolTable table) {
+    return false;
+  }
   
+  public void initialize(SymbolTable table) {
+    
+  }
 }
 
 /* JavaCC - OriginalChecksum=c6a53a7e2b2b8ce930bd6fa4f9a48784 (do not edit this line) */

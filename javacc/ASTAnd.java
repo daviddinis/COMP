@@ -19,5 +19,9 @@ class ASTAnd extends SimpleNode {
     }
     else return "";
   }
+
+  public boolean isInitialized(SymbolTable table) {
+    return ((SimpleNode)children[0]).isInitialized(table) && ((SimpleNode)children[1]).isInitialized(table); 
+  }
 }
 /* JavaCC - OriginalChecksum=1766d5431be81e19119cf5feee80cd49 (do not edit this line) */

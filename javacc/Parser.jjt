@@ -62,14 +62,15 @@ public class Parser
  
     SimpleNode root = parser.Program();
     root.dump("");
-     root.createSymbolTable(parser.getclassTable());
-    //System.out.println(parser.getclassTable().toString());
+    root.createSymbolTable(parser.getclassTable());
+    System.out.println(parser.getclassTable().toString());
+    System.out.println(parser.methods.toString());
+
     if(errorCount < 10){
       throw new ParseException();
     }
 
-    // root.buildSymbolTable();
-    // root.semanticAnalysis();
+    root.analyzeSemantics(parser.getclassTable());
     // root.codeGeneration();
   }
 }
@@ -385,6 +386,7 @@ void Else() : {}
 
 void Equals() : {}
 {
+  {jjtThis.setLine(getToken(1).beginLine); }
   Identifier()
     [< LSQUARE >  Expression() #IntArray(2)< RSQUARE >] < EQUALS > EqualsExpression() < SEMICOLON >
 }
@@ -478,16 +480,12 @@ void Term7()#void   :
 void Term8()  #void :
 {}
 {
-  Term9()  [ LOOKAHEAD(2) < DOT >  Identifier() < LPAR >
-  (
-    ArgumentCall()
-  )?
-  < RPAR >]
+  Term9()  [ LOOKAHEAD(2) < DOT >  Identifier() < LPAR > ArgumentCall() < RPAR > #function(3)]
 }
 
 void ArgumentCall() : {}
 {
-  Expression() ( < COMMA > Expression())*
+  [ Expression() ( < COMMA > Expression())* ]
 }
 
 void Term9() #void :

@@ -19,7 +19,7 @@ class ASTIdentifier extends SimpleNode implements ASTType{
     return "" + jjtGetValue();
   }
 
-  public String analyzeType(SymbolTable table, SimpleNode left) {
+  public String analyzeType(SymbolTable table) {
     analyzeSemantics(table);
     Symbol id = table.getSymbol(getName());
     if (id == null) {
@@ -32,6 +32,21 @@ class ASTIdentifier extends SimpleNode implements ASTType{
     if (symbolTable.getSymbol(getName()) == null) {
       System.err.println("variable " + getName() + " in line " + getLine() +" is not declared");
     }
+  }
+
+  public void initialize(SymbolTable table) {
+    Symbol id = table.getSymbol(getName());
+    if (id != null) {
+      id.initialize();
+    }
+  }
+
+  public boolean isInitialized(SymbolTable table) {
+    Symbol id = table.getSymbol(getName());
+    if (id != null) {
+      return id.isInitialized();
+    }
+    return false;
   }
 }
 /* JavaCC - OriginalChecksum=75abfe948da46b0c7b3a59b2cae3a666 (do not edit this line) */

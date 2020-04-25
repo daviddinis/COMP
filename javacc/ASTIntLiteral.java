@@ -10,5 +10,9 @@ class ASTIntLiteral extends SimpleNode {
     super(p, id);
   }
 
+  public String analyzeType(SymbolTable table) {
+    return "Int";
+  }
+
 }
 /* JavaCC - OriginalChecksum=3cbf5a57c95087c442314130215558ea (do not edit this line) */

@@ -10,5 +10,12 @@ class ASTLENGTH extends SimpleNode {
     super(p, id);
   }
 
+  public String analyzeType(SymbolTable table) {
+    if (((SimpleNode)children[0]).analyzeType(table).equals("Int[]")) {
+      return "Int";
+    }
+    return "";
+  }
+
 }
 /* JavaCC - OriginalChecksum=9340b1c9d0f3a7601be1ff8cdf1361a0 (do not edit this line) */

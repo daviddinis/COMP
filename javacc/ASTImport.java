@@ -58,6 +58,10 @@ public class ASTImport extends SimpleNode {
     }
   }
 
+  public void analyzeSemantics(SymbolTable table) {
+    
+  }
+
 }
 /*
  * JavaCC - OriginalChecksum=102b8623e78d8554f34992788a15d8e1 (do not edit this

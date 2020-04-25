@@ -14,7 +14,7 @@ class ASTIf extends SimpleNode {
 
   public void analyzeSemantics(SymbolTable table) {
     if (!((SimpleNode)children[0]).analyzeType(table).equals("Bool")) {
-      System.err.println("If expression in line " + getLine() +" is not valid");
+      System.err.println("If expression in line " + getLine() +" is not valid\n");
     }
   }
 

@@ -2,7 +2,6 @@ options
 {
   LOOKAHEAD= 1;
   MULTI=true;
-  NODE_SCOPE_HOOK=true;
 }
 
 PARSER_BEGIN(Parser)
@@ -36,12 +35,6 @@ public class Parser
     return this.methods.get(id);
   }
 
-  public static void jjtreeOpenNodeScope(Node n) {
-    // ((SimpleNode) n).setLine(getToken(1).beginLine);
-  }
-
-  public static void jjtreeCloseNodeScope(Node n) {}
-
   public static void main(String args []) throws ParseException
   {
     Parser parser;
@@ -65,8 +58,6 @@ public class Parser
     SimpleNode root = parser.Program();
     root.dump("");
     root.createSymbolTable(parser.getclassTable());
-    System.out.println(parser.getclassTable().toString());
-    System.out.println(parser.methods.toString());
 
     if(errorCount < 10){
       throw new ParseException();
@@ -344,7 +335,7 @@ void Type() #void :
   )
 }
 
-void StatementDeclarations()  #void :
+void StatementDeclarations()  :
 {}
 {
   (
@@ -372,6 +363,7 @@ void Statement() #void  :
 
 void If() : {}
 {
+  {jjtThis.setLine(getToken(1).beginLine); }
   < IF > < LPAR >  Expression() < RPAR > 
 }
 
@@ -476,7 +468,7 @@ void Term6() #void  :
 void Term7()#void   :
 {}
 {
-  Term8()  [ LOOKAHEAD(2) < DOT > < LENGTH > #LENGTH ]
+  Term8()  [ LOOKAHEAD(2) < DOT > < LENGTH >  #LENGTH(1) ]
 }
 
 void Term8()  #void :
@@ -504,9 +496,9 @@ void Term9() #void :
   | 
     LOOKAHEAD(2) NewInt()
   | 
-   < NEW > #NEW Identifier() < LPAR > < RPAR > 
+   < NEW > Identifier() < LPAR > < RPAR > #NewId(1)
   | 
-    < NOT > #NOT Expression()
+    < NOT >  Expression() #NOT(1)
   | 
     Par()
   |
@@ -521,15 +513,16 @@ void IntLiteral() : {Token t;}
 
 void Identifier() : {Token t;}
 {
+  {jjtThis.setLine(getToken(1).beginLine); }
   t=< IDENTIFIER > { jjtThis.jjtSetValue(t.image); }
 }
 
-void NewInt() : {Token t3, t4;}
+void NewInt() : {}
 {
-  (< NEW > < INT > t3=< LSQUARE >  Expression() t4=< RSQUARE >) { jjtThis.jjtSetValue(t3.image + t4.image); }
+  < NEW > < INT > < LSQUARE >  Expression() < RSQUARE >
 }
 
-void Par(): {}
+void Par() #void: {}
 {
   < LPAR > Expression() < RPAR >
 }

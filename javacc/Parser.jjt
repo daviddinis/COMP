@@ -17,6 +17,7 @@ public class Parser
   static String className;
   static String extend;
   private SymbolTable classTable = new SymbolTable();
+  private ArrayList<String> types = new ArrayList<String>(Arrays.asList("Int", "Bool", "Int[]"));
   private HashMap<String, SymbolTable> methods = new HashMap<String, SymbolTable>();
   static private Parser instance;
   public SymbolTable getclassTable(){
@@ -38,11 +39,32 @@ public class Parser
     }
   }
 
+  public boolean checkType(String type) {
+    return types.contains(type);
+  } 
+
+  public void addType(String type) {
+    types.add(type);
+  }
+
   public SymbolTable getTable(String id){
     return this.methods.get(id);
   }
 
-  public static void main(String args []) throws ParseException
+  public void addSemanticError(){
+    try {
+      errorCount--;
+      if (errorCount == 0) {
+        throw new SemanticException();
+      }
+    } catch (SemanticException e) {
+      System.out.println("Too much semantic errors found, exiting");
+      System.exit(1);
+    }
+    
+  }
+
+  public static void main(String args []) throws ParseException, SemanticException
   {
     Parser parser;
     
@@ -64,13 +86,21 @@ public class Parser
  
     SimpleNode root = parser.Program();
     root.dump("");
-    root.createSymbolTable(parser.getclassTable());
 
     if(errorCount < 10){
       throw new ParseException();
     }
 
+    root.createSymbolTable(parser.getclassTable());
+    // static io.println(Int) function added
+    parser.addMethod("io.println(Int)", new SymbolTable());
+    parser.classTable.addSymbol(new Symbol("io", "io"));
+
     root.analyzeSemantics(parser.getclassTable());
+
+    if(errorCount < 10) {
+      throw new SemanticException();
+    }
     // root.codeGeneration();
   }
 }
@@ -270,6 +300,7 @@ void VariableDeclarations() #void  :
 void Variable()  :
 {}
 {
+  {jjtThis.setLine(getToken(1).beginLine); }
   Type() Identifier() < SEMICOLON >
 }
 
@@ -301,6 +332,7 @@ void Method()   :
 
 void Return(): {}
 {
+  {jjtThis.setLine(getToken(1).beginLine); }
   < RETURN > Expression() < SEMICOLON > < RCURLY >
 }
 

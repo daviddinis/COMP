@@ -10,5 +10,12 @@ class ASTReturn extends SimpleNode {
     super(p, id);
   }
 
+  public void analyzeSemantics(SymbolTable table) {
+    String type = ((SimpleNode) children[0]).analyzeType(table);
+    if (!table.getReturnType().equals(type)) {
+      System.out.println("Return type in line " + getLine() + " is not valid");
+      Parser.getInstance().addSemanticError();
+    }
+  }
 }
 /* JavaCC - OriginalChecksum=0d7badc8de429fd7f39c8b2723d9a136 (do not edit this line) */

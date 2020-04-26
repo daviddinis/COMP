@@ -17,5 +17,9 @@ class ASTLENGTH extends SimpleNode {
     return "";
   }
 
+
+  public boolean isInitialized(SymbolTable table) {
+    return ((SimpleNode) children[0]).isInitialized(table);
+  }
 }
 /* JavaCC - OriginalChecksum=9340b1c9d0f3a7601be1ff8cdf1361a0 (do not edit this line) */

@@ -17,14 +17,15 @@ public class ASTMethod extends SimpleNode {
     SymbolTable newTable = new SymbolTable(symbolTable);
 
     String methodName = ((ASTIdentifier) children[1]).getName() + "(";
-
+    int args = 0;
     for (int i = 0; i < children.length; i++) {
       if (children[i] instanceof ASTArgument) {
         for (int k = 0; k<((ASTArgument) children[i]).children.length; k+=2 ){
+          if (args>0)
+            methodName += ",";
           methodName += ((ASTType) ((ASTArgument) children[i]).children[k]).getType();
-          if (k != ((ASTArgument) children[i]).children.length-2)
-          methodName += ",";
         }
+        args++;
       }
     }
     methodName += ")";
@@ -40,7 +41,7 @@ public class ASTMethod extends SimpleNode {
 
   public void analyzeSemantics(SymbolTable table) {
     for (int i = 0; i < children.length; i++) {
-      if (children[i] instanceof ASTStatementDeclarations)
+      if (children[i] instanceof ASTStatementDeclarations || children[i] instanceof ASTReturn)
         ((SimpleNode) children[i]).analyzeSemantics(this.table);
     }
   }

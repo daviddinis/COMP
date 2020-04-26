@@ -18,8 +18,10 @@ class ASTClassDeclaration extends SimpleNode {
     if(children[0] instanceof ASTExtends){
       Parser.getInstance().className = ((ASTIdentifier)((ASTExtends)children[0]).children[0]).getName();
       Parser.getInstance().extend = ((ASTIdentifier)((ASTExtends)children[0]).children[1]).getName();
+      Parser.getInstance().addType(((ASTIdentifier)((ASTExtends)children[0]).children[0]).getName());
     }else {
       Parser.getInstance().className = ((ASTIdentifier)children[0]).getName();
+      Parser.getInstance().addType(((ASTIdentifier)children[0]).getName());
     }
 
     for (int i = 0; i < children.length; i++) {

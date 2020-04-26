@@ -22,12 +22,14 @@ public class ASTImport extends SimpleNode {
 
   public void createSymbolTable(SymbolTable symbolTable) {
 
-    if (children != null && children.length > 3) {
+    if (children != null && children.length > 1) {
 
       SymbolTable newTable = new SymbolTable(symbolTable);
       String methodName = new String();
       if (isStatic) {
-        methodName += "static ";
+        //methodName += "static ";
+        Symbol s = new Symbol(((ASTIdentifier) children[0]).getName(), ((ASTIdentifier) children[0]).getName());
+        symbolTable.addSymbol(s);
       }
 
       methodName += ((ASTIdentifier) children[0]).getName();
@@ -45,7 +47,7 @@ public class ASTImport extends SimpleNode {
               methodName += ((ASTType) ((ASTParamList) children[i]).children[k]).getType();
             }
           }
-          methodName += ") ";
+          methodName += ")";
           if (returnType) {
             newTable.setReturnType(((ASTType) children[i + 1]).getType());
           }
@@ -55,6 +57,9 @@ public class ASTImport extends SimpleNode {
 
       Parser.getInstance().addMethod(methodName, newTable);
 
+    }
+    else {
+      Parser.getInstance().addType(((ASTIdentifier) children[0]).getName());
     }
   }
 

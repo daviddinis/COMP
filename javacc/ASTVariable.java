@@ -14,6 +14,11 @@ class ASTVariable extends SimpleNode {
   public void createSymbolTable(SymbolTable symbolTable){
     String type;
     type = ((ASTType)children[0]).getType();
+    if (!Parser.getInstance().checkType(type)) {
+      System.out.println("Type " + type + " in line " +  getLine() + "is not valid!");
+      Parser.getInstance().addSemanticError();
+      return;
+    }
     Symbol symbol = new Symbol(type, ((ASTIdentifier)children[1]).getName());
     symbolTable.addSymbol(symbol);
   }

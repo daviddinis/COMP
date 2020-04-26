@@ -17,5 +17,8 @@ class ASTNOT extends SimpleNode {
     return "";
   }
 
+  public boolean isInitialized(SymbolTable table) {
+    return ((SimpleNode) children[0]).isInitialized(table);
+  }
 }
 /* JavaCC - OriginalChecksum=16d53ed9e35a62bfcfc2dfb414cfb54a (do not edit this line) */

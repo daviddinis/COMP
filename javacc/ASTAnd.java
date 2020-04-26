@@ -17,7 +17,9 @@ class ASTAnd extends SimpleNode {
     if(type1.equals("Bool") && type2.equals("Bool")) {
       return "Bool";
     }
-    else return "";
+    else {
+      return "";
+    }
   }
 
   public boolean isInitialized(SymbolTable table) {

@@ -101,7 +101,8 @@ public class Parser
     if(errorCount < 10) {
       throw new SemanticException();
     }
-    // root.codeGeneration();
+    
+    CodeGenerator cg = new CodeGenerator(root, parser.getclassTable(), "ola.j");
   }
 }
 

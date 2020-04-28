@@ -75,11 +75,6 @@ class SimpleNode implements Node {
        return prefix + toString() + " " + jjtGetValue();
      }
   }
-    
-    
-    
-
-
 
   /* Override this method if you want to customize how the node dumps
      out its children. */

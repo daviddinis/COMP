@@ -1,41 +1,57 @@
 import java.util.*;
 import java.io.*;
 
-public class CodeGenerator{
+public class CodeGenerator {
 
     private SimpleNode root;
     private SymbolTable symbolTable;
     private PrintWriter print;
+    private String className;
 
-    public CodeGenerator(SimpleNode root, SymbolTable symbolTable, String codeFile){
-        this.root = (SimpleNode)root.jjtGetChild(0);
+    public CodeGenerator(SimpleNode root, SymbolTable symbolTable) {
+        this.root = root;
         this.symbolTable = symbolTable;
+        System.out.println(this.root.children.length);
+        //this.className = ((SimpleNode)root.children[0].children[0].getValue();
+        makeFile(className + ".j" );
 
-        //creating the file
-        try{
-			File f = new File(codeFile);
+                
+    }
 
-			if(!f.exists())
-			    try {
-                    f.getParentFile().mkdir();
-                } catch (Exception e) {}
-
-			this.print = new PrintWriter(f);
-
-		} catch(IOException exception){
-
-			exception.printStackTrace();
-		}
-
-        //creating header for the .j file
+    public void generate(){
+        // creating header for the .j file
         createHeader();
 
 
         this.print.close();
     }
 
-    private void createHeader(){
-        this.print.println(".class public "); //+ nome da classe, etc
+    private void createImports(){
+        //TODO: 
     }
+
+    private void createHeader() {
+        this.print.println(".class public " + this.className); // + nome da classe, etc
+    }
+
+    private void makeFile(String outputFile){
+        
+        try {
+            File f = new File(outputFile);
+
+            if (!f.exists()) {
+                try {
+                    f.getParentFile().mkdir();
+                } catch (Exception e) {
+                }
+            }
+            this.print = new PrintWriter(f);
+
+        } catch (IOException exception) {
+            exception.printStackTrace();
+        }
+    }
+
     
+
 }

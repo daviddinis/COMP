@@ -106,7 +106,7 @@ public class Parser
 
     // -- Code Generation --
     CodeGenerator codeGenerator = new CodeGenerator(root, classTable);
-
+    codeGenerator.generate();
   }
 }
 

@@ -5,3 +5,5 @@
 bin/
 generated/
 build/
+jasminFiles/
+*.j

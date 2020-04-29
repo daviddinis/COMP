@@ -75,9 +75,9 @@ todas as verificações feitas na análise semantica devem reportar erro excepto
 	* Y verificar se o tipo dos parâmetros coincide com o tipo dos argumentos
 	    - Y não esquecer que existe method overloading
 ## Code Generation 
-    * estrutura básica de classe (incluindo construtor <init>)
-	* estrutura básica de fields
-	* estrutura básica de métodos (podem desconsiderar os limites neste checkpoint: limit_stack 99, limit_locals 99)
+    * Y estrutura básica de classe (incluindo construtor <init>)
+	* Y estrutura básica de fields
+	* Y estrutura básica de métodos (podem desconsiderar os limites neste checkpoint: limit_stack 99, limit_locals 99)
 	* assignments
 	* operações aritméticas (com prioridade de operações correta)
 		- neste checkpoint não é necessário a seleção das operações mais eficientes mas isto será considerado no CP3 e versão final

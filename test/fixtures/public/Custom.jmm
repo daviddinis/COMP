@@ -1,10 +1,16 @@
-class Custom extends Popop {
+class Custom {
 
     int a;
     boolean b;
     int[] c;
 
     public static void main(String[] args) {
-		
+        a = 5;
 	}
+
+    public int func(int k, boolean t, int[] o){
+        int j;
+        return j;
+    }
+
 }

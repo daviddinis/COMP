@@ -1,4 +1,7 @@
 import java.util.*;
+
+import jdk.tools.jaotc.binformat.SymbolTable;
+
 import java.io.*;
 
 public class CodeGenerator {
@@ -24,6 +27,7 @@ public class CodeGenerator {
         createHeader();
 
         globalDeclarations();
+        methodDeclarations();
 
         this.print.close();
     }
@@ -65,6 +69,15 @@ public class CodeGenerator {
             }
 
             i++;
+        }
+
+    }
+
+
+    private void methodDeclarations(){
+
+        for(HashMap.Entry<String, SymbolTable> entry : Parser.getInstance().methods.entrySet()){
+            
         }
 
     }

@@ -1,4 +1,9 @@
-class Custom {
+class Custom extends Popop {
+
+    int a;
+    boolean b;
+    int[] c;
+
     public static void main(String[] args) {
 		
 	}

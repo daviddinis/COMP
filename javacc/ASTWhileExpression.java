@@ -10,5 +10,14 @@ class ASTWhileExpression extends SimpleNode {
     super(p, id);
   }
 
+  public void analyzeSemantics(SymbolTable table) {
+    if (!((SimpleNode)((SimpleNode)children[0]).children[0]).analyzeType(table).equals("Bool")) {
+      System.err.println("While expression in line " + getLine() +" is not valid\n");
+    }
+
+    for (int i = 1; i < children.length; i++) {
+      ((SimpleNode)children[i]).analyzeSemantics(table);
+    }
+  }
 }
 /* JavaCC - OriginalChecksum=a9e3b1f68dbe03321e86491d5d7e8b24 (do not edit this line) */

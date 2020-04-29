@@ -393,8 +393,7 @@ void Statement() #void  :
     (
       < LCURLY > StatementDeclarations() < RCURLY >
     | 
-      If()Then()
-      Else()
+      If()
     | 
       While()
     |
@@ -408,7 +407,7 @@ void Statement() #void  :
 void If() : {}
 {
   {jjtThis.setLine(getToken(1).beginLine); }
-  < IF > < LPAR >  Expression() < RPAR > 
+  < IF > < LPAR >  Expression() < RPAR > Then() Else()
 }
 
 void Then() :{}
@@ -450,6 +449,7 @@ void While() #void : {}
 void WhileExpression() :
 {}
 {
+  {jjtThis.setLine(getToken(1).beginLine); }
   Expression()
 }
 

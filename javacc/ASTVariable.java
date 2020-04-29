@@ -19,7 +19,12 @@ class ASTVariable extends SimpleNode {
       Parser.getInstance().addSemanticError();
       return;
     }
-    Symbol symbol = new Symbol(type, ((ASTIdentifier)children[1]).getName());
+    Symbol symbol;
+    if (parent instanceof ASTClassDeclaration) {
+      symbol = new Symbol(type, ((ASTIdentifier)children[1]).getName(), Symbol.Access.global);
+    } else {
+      symbol = new Symbol(type, ((ASTIdentifier)children[1]).getName(), Symbol.Access.local);
+    }
     symbolTable.addSymbol(symbol);
   }
 

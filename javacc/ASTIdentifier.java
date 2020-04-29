@@ -34,17 +34,43 @@ class ASTIdentifier extends SimpleNode implements ASTType{
     }
   }
 
+  public boolean isMethodScoped() {
+    return true;
+  }
+
+  public boolean isScoped() {
+    SimpleNode child = this;
+    SimpleNode parent;
+    do {
+      parent = (SimpleNode) child.jjtGetParent();
+      if (parent instanceof ASTIf || parent instanceof ASTWhile) {
+        return true;
+      }
+      child = parent;
+    } while (!(parent instanceof ASTMethod || parent instanceof ASTMainMethod));
+    return false;
+  }
+
   public void initialize(SymbolTable table) {
     Symbol id = table.getSymbol(getName());
     if (id != null) {
-      id.initialize();
+      if (id.getAccess() == Symbol.Access.local && isScoped()) {
+          id.scopeInitialize();
+      //} else if (id.getAccess() == Symbol.Access.global && isMethodScoped()) {
+        //  id.scopeInitialize();
+      } else {
+          id.initialize();
+      }
     }
   }
 
   public boolean isInitialized(SymbolTable table) {
     Symbol id = table.getSymbol(getName());
     if (id != null) {
-      return id.isInitialized();
+      if (!id.isInitialized() && id.isScopeInitialized()) {
+        System.out.println("Warning: The variable " + id.getId() + " might not be initialized when used in line " + getLine());
+      }
+      return id.isInitialized() || id.isScopeInitialized();
     }
     return false;
   }

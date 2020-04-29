@@ -95,7 +95,7 @@ public class Parser
     root.createSymbolTable(parser.getclassTable());
       // static io.println(Int) function added
     parser.addMethod("io.println(Int)", new SymbolTable());
-    parser.classTable.addSymbol(new Symbol("io", "io"));
+    parser.classTable.addSymbol(new Symbol("io", "io", Symbol.Access.global));
 
     root.analyzeSemantics(parser.getclassTable());
 

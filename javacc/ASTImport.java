@@ -28,7 +28,7 @@ public class ASTImport extends SimpleNode {
       String methodName = new String();
       if (isStatic) {
         //methodName += "static ";
-        Symbol s = new Symbol(((ASTIdentifier) children[0]).getName(), ((ASTIdentifier) children[0]).getName());
+        Symbol s = new Symbol(((ASTIdentifier) children[0]).getName(), ((ASTIdentifier) children[0]).getName(), Symbol.Access.global);
         symbolTable.addSymbol(s);
       }
 

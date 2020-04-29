@@ -11,7 +11,7 @@ class ASTWhileExpression extends SimpleNode {
   }
 
   public void analyzeSemantics(SymbolTable table) {
-    if (!((SimpleNode)((SimpleNode)children[0]).children[0]).analyzeType(table).equals("Bool")) {
+    if (!((SimpleNode)children[0]).analyzeType(table).equals("Bool")) {
       System.err.println("While expression in line " + getLine() +" is not valid\n");
     }
 

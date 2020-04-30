@@ -20,6 +20,9 @@ public class Parser
   private ArrayList<String> types = new ArrayList<String>(Arrays.asList("Int", "Bool", "Int[]"));
   private HashMap<String, SymbolTable> methods = new HashMap<String, SymbolTable>();
   static private Parser instance;
+  static boolean debug = false;
+  static boolean varInitIgnore = false;
+
   public SymbolTable getclassTable(){
     return this.classTable;
   }
@@ -80,6 +83,29 @@ public class Parser
         return;
       }
     } 
+    if (args.length == 2) {
+      try {
+		    java.io.FileInputStream file = new java.io.FileInputStream(new java.io.File(args[0]));
+        parser = new Parser(file);
+        instance = parser;
+      } catch (FileNotFoundException e) {
+        System.out.println(e);
+        return;
+      }
+      debug = args[1].equals("1") ? true : false;
+    }
+    if(args.length == 3) {
+      try {
+		    java.io.FileInputStream file = new java.io.FileInputStream(new java.io.File(args[0]));
+        parser = new Parser(file);
+        instance = parser;
+      } catch (FileNotFoundException e) {
+        System.out.println(e);
+        return;
+      }
+      debug = args[1].equals("1") ? true : false;
+      varInitIgnore = args[2].equals("1") ? true : false;
+    }
     else {
   	  parser = new Parser(System.in);
   	}
@@ -96,6 +122,11 @@ public class Parser
       // static io.println(Int) function added
     parser.addMethod("io.println(Int)", new SymbolTable());
     parser.classTable.addSymbol(new Symbol("io", "io", Symbol.Access.global));
+
+    if (debug) {
+      System.out.println(parser.classTable.toString());
+      System.out.println(parser.methods.toString());
+    }
 
     root.analyzeSemantics(parser.getclassTable());
 

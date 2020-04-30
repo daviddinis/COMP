@@ -65,13 +65,17 @@ class ASTIdentifier extends SimpleNode implements ASTType{
   }
 
   public boolean isInitialized(SymbolTable table) {
+    if (Parser.varInitIgnore) {
+      return true;
+    }
     Symbol id = table.getSymbol(getName());
     if (id != null) {
-      if (!id.isInitialized() && id.isScopeInitialized()) {
+      if (!id.isInitialized() && id.isScopeInitialized() && id.getAccess() != Symbol.Access.global) {
         System.out.println("Warning: The variable " + id.getId() + " might not be initialized when used in line " + getLine());
       }
-      return id.isInitialized() || id.isScopeInitialized();
+      return id.isInitialized() || id.isScopeInitialized() || id.getAccess() == Symbol.Access.global;
     }
+    // return error 
     return false;
   }
 }

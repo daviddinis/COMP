@@ -82,8 +82,7 @@ public class Parser
         System.out.println(e);
         return;
       }
-    } 
-    if (args.length == 2) {
+    } else if (args.length == 2) {
       try {
 		    java.io.FileInputStream file = new java.io.FileInputStream(new java.io.File(args[0]));
         parser = new Parser(file);
@@ -93,8 +92,7 @@ public class Parser
         return;
       }
       debug = args[1].equals("1") ? true : false;
-    }
-    if(args.length == 3) {
+    } else if(args.length == 3) {
       try {
 		    java.io.FileInputStream file = new java.io.FileInputStream(new java.io.File(args[0]));
         parser = new Parser(file);

@@ -13,6 +13,7 @@ class SimpleNode implements Node {
   protected String name = null;
   protected int line;
   protected SymbolTable table;
+  protected String operator;
 
 
   public SimpleNode(int i) {
@@ -89,6 +90,15 @@ class SimpleNode implements Node {
         }
       }
     }
+  }
+
+  public String getOperator() {
+    return operator;
+  }
+
+  public void setOperator(String op) {
+    System.out.println(op);
+    operator = op;
   }
 
   public int getId() {

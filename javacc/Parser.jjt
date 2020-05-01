@@ -511,25 +511,15 @@ void LessThan() #void : {}
 }
 
 void Term2() #void :
-{}
+{Token t;}
 {
-  Term3() (LOOKAHEAD(2) AddSub() #AddSub(2) )*
-}
-
-void AddSub() #void : {}
-{
- ( < ADD > | < SUB > ) Term3()
+  Term3() (LOOKAHEAD(2) ( t=< ADD > | t=< SUB > ) Term3() {jjtThis.setOperator(t.image);}#AddSub(2) )*
 }
 
 void Term3()  #void :
-{}
+{Token t;}
 {
-  Term6() (LOOKAHEAD(2) MulDiv() #MulDiv(2) ) *
-}
-
-void MulDiv() #void : {}
-{
-  (  < MUL > | <DIV> ) Term6() 
+  Term6() (LOOKAHEAD(2) (  t=< MUL > | t=<DIV> ) Term6() {jjtThis.setOperator(t.image);}#MulDiv(2) ) *
 }
 
 void Term6() #void  :

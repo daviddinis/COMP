@@ -21,7 +21,7 @@ class ASTIntLiteral extends SimpleNode {
 
   public void generateCode(SymbolTable table, PrintWriter print){
 
-    print.print("bipush ");
+    print.print("\tbipush ");
     print.println(this.value);
 
   }

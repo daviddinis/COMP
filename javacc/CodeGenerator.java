@@ -99,7 +99,7 @@ public class CodeGenerator {
             }
 
         }
-
+        this.print.println("\treturn");
         this.print.println(".end method");
     }
 
@@ -122,7 +122,7 @@ public class CodeGenerator {
 
         String returnType = smallTypeFromString(((ASTType) node.children[0]).getType());
 
-        this.print.println(".method public static " + funcName + "(" + argTypes + ")" + returnType);
+        this.print.println(".method public " + funcName + "(" + argTypes + ")" + returnType);
 
         this.print.println("  .limit stack 99");
         this.print.println("  .limit locals 99");
@@ -138,11 +138,12 @@ public class CodeGenerator {
 
         }
 
-        this.print.println(".end method");
 
+        ((ASTReturn) node.children[node.children.length - 1]).generateCode(node.getSymbolTable(),  this.print);
+        this.print.println(".end method");
     }
 
-    private String smallTypeFromString(String type) {
+    public static String smallTypeFromString(String type) {
         switch (type) {
             case "Int":
                 return "I";

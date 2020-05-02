@@ -5,14 +5,18 @@ class Custom {
     int[] c;
 
     public static void main(String[] args) {
-        
+        int ola;
+        ola = 2 * 3 - 4 + 5 / 2;
+        ola = ola + ola;
 	}
 
-    public int func(int k, boolean t, int[] o){
-        int j;
-        j = 2 * 3;
-        return j;
-        
-    }
+   //public int func(int k, boolean t, int[] o){
+   //    int j;
+   //    int ola;
+   //    ola = 2 * 3 - 4 + 5 / 2;
+   //    j = ola + ola;
+   //    return 1;
+   //    
+   //}
 
 }

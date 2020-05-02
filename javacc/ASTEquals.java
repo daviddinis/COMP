@@ -30,17 +30,30 @@ class ASTEquals extends SimpleNode {
 
   public void generateCode(SymbolTable table, PrintWriter print){
 
+    if(children[0] instanceof ASTIntArray){
+      System.out.print("ARRAY MANIPULATION NOT COMPLETE");
+      return;
+    }
+
     ASTIdentifier left = ((ASTIdentifier) children[0]);
+
+
     SimpleNode right = ((SimpleNode) children[1]);
-    
+    String type = left.analyzeType(table);
+
     right.generateCode(table, print);
 
-    if( ((left.analyzeType(table)).equals("Int")) || ((left.analyzeType(table)).equals("Int[]")) || ((left.analyzeType(table)).equals("Bool")) ){
-      print.print("istore ");
+    if(table.getSymbol(left.getName()).getAccess() == Symbol.Access.global){
+      String className = Parser.getInstance().className;
+      print.println("aload_0");
+      print.println("\tputfield " + className + "/" + left.getName() +" "+ CodeGenerator.smallTypeFromString(type));
+    }
+    else if( ((type).equals("Int")) || ((type).equals("Int[]")) || ((type).equals("Bool")) ){
+      print.print("\tistore ");
       print.println(table.getTablePosition(left.getName()));
     }
     else{
-      print.print("astore ");
+      print.print("\tastore ");
       print.println(table.getTablePosition(left.getName()));
     }
 

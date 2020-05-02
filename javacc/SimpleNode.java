@@ -98,7 +98,6 @@ public class SimpleNode implements Node {
   }
 
   public void setOperator(String op) {
-    System.out.println(op);
     operator = op;
   }
 
@@ -147,11 +146,7 @@ public class SimpleNode implements Node {
   }
 
   public void generateCode(SymbolTable symbolTable, PrintWriter print){
-    if (children == null) return;
-
-    for (int i = 0; i < children.length; i++){
-      ((SimpleNode) children[i]).generateCode(symbolTable, print);
-    }
+    
 
   }
 

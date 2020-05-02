@@ -5,7 +5,7 @@ class Custom {
     int[] c;
 
     public static void main(String[] args) {
-        a = 5;
+        
 	}
 
     public int func(int k, boolean t, int[] o){

@@ -46,43 +46,44 @@ To test the program, run ``gradle test``. This will execute the build, and run t
 ## Checklist CP 2:
 ### Semantic Analysis
 
-- todos os pontos com __Y__ no início são suportados
+- todos os pontos com [x] no início são suportados  
 
-todas as verificações feitas na análise semantica devem reportar erro excepto a verificação de inicialização de variáveis que deverá apenas dar um warning:
-- Symbol Table
-    . __Y__ global: inclui info de imports e a classe declarada
-    . __Y__ classe-specific: inclui info de extends, fields e methods
-    . __Y__ method-specific: inclui info dos arguments e local variables
-    . sub topics:
-       + __Y__ tem de permitir method overload (i.e. métodos com mesmo nome mas assinatura de parâmetros diferente)
-       + __Y__ tem de permitir consulta da tabela por parte da análise semantica (e geração de código)
-       + __Y__ tem de permitir ligar e desligar a sua impressão para fins de debug (neste caso para fins de avaliação) __(verificar na secção Run)__
-- Type Verification
-    . __Y__ verificar se operações são efetuadas com o mesmo tipo (e.g. int + boolean tem de dar erro)
-    . __Y__ não é possível utilizar arrays diretamente para operações aritmeticas (e.g. array1 + array2)
-    . __Y__ verificar se um array access é de facto feito sobre um array
-    . __Y__ verificar se o indice do array access é um inteiro
-    . __Y__ verificar se valor do assignee é igual ao do assigned (a_int = b_boolean não é permitido!)
-    . __Y__ verificar se operação booleana é efetuada só com booleanos
-    . __Y__ verificar se conditional expressions (if e while) resulta num booleano
-    . __Y__ verificar se variáveis são inicializadas, dando um WARNING em vez de ERRO
-       + __Y__ parametros são assumidos como inicializados
-       + __Y__ devem fazer uma análise através do control flow, i.e., se há um if e a variável só é inicializada dentro de ou o then ou o else, deve-se dar um warning a indicar que poderá não estar inicializada
-       + __Y__ será considerado bónus a quem resolver esta verificação usando erros em vez de warning.
-            - __Y__ cuidado que se a analise não estiver bem feita os erros vão fazer com que o vosso compilador não passe para a geração de código!
-			- __Y__ caso pretendam fazer esta abordagem com erros adicionem uma forma de ativar/desativar o erro para facilitar no caso de haver problemas. __(verificar na secção Run)__
-- Function Verification
-	* __Y__ verificar se o "target" do método existe, e se este contém o método (e.g. a.foo, ver se 'a' existe e se tem um método 'foo')
-	    - __Y__ caso seja do tipo da classe declarada (e.g. a usar o this), verificar se é método do extends olhando para o que foi importado (isto se a classe fizer extends de outra classe importada)
-	* __Y__ caso o método não seja da classe declarada, isto é importada, verificar se método foi importado
-	* __Y__ verificar se o número de argumentos na invocação é igual ao número de parâmetros da declaração
-	* __Y__ verificar se o tipo dos parâmetros coincide com o tipo dos argumentos
-	    - __Y__ não esquecer que existe method overloading
-## Code Generation 
-    * __Y__ estrutura básica de classe (incluindo construtor <init>)
-	* __Y__ estrutura básica de fields
-	* __Y__ estrutura básica de métodos (podem desconsiderar os limites neste checkpoint: limit_stack 99, limit_locals 99)
-	* assignments
-	* operações aritméticas (com prioridade de operações correta)
-		- neste checkpoint não é necessário a seleção das operações mais eficientes mas isto será considerado no CP3 e versão final
-	* invocação de métodos
+todas as verificações feitas na análise semantica devem reportar erro excepto a verificação de inicialização de variáveis que deverá apenas dar um warning:  
+- Symbol Table  
+    * [x] global: inclui info de imports e a classe declarada  
+    * [x] classe-specific: inclui info de extends, fields e methods  
+    * [x] method-specific: inclui info dos arguments e local variables  
+    * sub topics:  
+       + [x] tem de permitir method overload (i.e. métodos com mesmo nome mas assinatura de parâmetros diferente)  
+       + [x] tem de permitir consulta da tabela por parte da análise semantica (e geração de código)  
+       + [x] tem de permitir ligar e desligar a sua impressão para fins de debug (neste caso para fins de avaliação) __(verificar na secção Run)__  
+- Type Verification  
+    * [x] verificar se operações são efetuadas com o mesmo tipo (e.g. int + boolean tem de dar erro)  
+    * [x] não é possível utilizar arrays diretamente para operações aritmeticas (e.g. array1 + array2)  
+    * [x] verificar se um array access é de facto feito sobre um array   
+    * [x] verificar se o indice do array access é um inteiro  
+    * [x] verificar se valor do assignee é igual ao do assigned (a_int = b_boolean não é permitido!)  
+    * [x] verificar se operação booleana é efetuada só com booleanos  
+    * [x] verificar se conditional expressions (if e while) resulta num booleano  
+    * [x] verificar se variáveis são inicializadas, dando um WARNING em vez de ERRO  
+       + [x] parametros são assumidos como inicializados  
+       + [x] devem fazer uma análise através do control flow, i.e., se há um if e a variável só é inicializada dentro de ou o then ou o else, deve-se dar um warning a indicar que poderá não estar inicializada  
+       + [x] será considerado bónus a quem resolver esta verificação usando erros em vez de warning.  
+            - [x] cuidado que se a analise não estiver bem feita os erros vão fazer com que o vosso compilador não passe para a geração de código!  
+			- [x] caso pretendam fazer esta abordagem com erros adicionem uma forma de ativar/desativar o erro para facilitar no caso de haver problemas. __(verificar na secção Run)__  
+- Function Verification  
+	* [x] verificar se o "target" do método existe, e se este contém o método (e.g. a.foo, ver se 'a' existe e se tem um método 'foo')  
+	    - [x] caso seja do tipo da classe declarada (e.g. a usar o this), verificar se é método do extends olhando para o que foi importado (isto se a classe fizer extends de outra classe importada)  
+	* [x] caso o método não seja da classe declarada, isto é importada, verificar se método foi importado  
+	* [x] verificar se o número de argumentos na invocação é igual ao número de parâmetros da declaração  
+	* [x] verificar se o tipo dos parâmetros coincide com o tipo dos argumentos  
+	    - [x] não esquecer que existe method overloading  
+## Code Generation  
+
+* [x] estrutura básica de classe (incluindo construtor <init>)  
+* [x] estrutura básica de fields  
+* [x] estrutura básica de métodos (podem desconsiderar os limites neste checkpoint: limit_stack 99, limit_locals 99)  
+* [ ] assignments  
+* [ ] operações aritméticas (com prioridade de operações correta)  
+	- neste checkpoint não é necessário a seleção das operações mais eficientes mas isto será considerado no CP3 e versão final  
+* [ ] invocação de métodos  

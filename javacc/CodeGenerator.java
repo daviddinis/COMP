@@ -80,29 +80,47 @@ public class CodeGenerator {
         String name = ((ASTIdentifier) field.children[1]).getName();
         tab();
         this.print.print(".field public ");
-        this.print.println(name + " "+  smallTypeFromString(type));
+        this.print.println(name + " " +  smallTypeFromString(type));
     }
 
     private void createMain(SimpleNode node) {
+
         newLine();
         this.print.println(".method public static main([Ljava/lang/String;)V");
         this.print.println("  .limit stack 99");
         this.print.println("  .limit locals 99");
 
+        for(int i = 0; i < node.jjtGetNumChildren(); i++) {
+
+            if(((SimpleNode)node.jjtGetChild(i)) instanceof ASTStatementDeclarations){
+                
+                for(int j = 0; j < ((SimpleNode)node.jjtGetChild(i)).jjtGetNumChildren(); j++){
+                    ((SimpleNode) node.jjtGetChild(i).jjtGetChild(j)).generateCode(node.getSymbolTable(), this.print);
+                }
+            }
+            
+        }
 
         this.print.println(".end method");
     }
 
     private void createMethod(SimpleNode node) {
+
         newLine();
         String funcName = ((ASTIdentifier) node.children[1]).getName();
         String argTypes = "";
-        int i = 2;
-        while (node.children[i] instanceof ASTArgument) {
-            String type = ((ASTType)((SimpleNode) node.children[i]).children[0]).getType();
-            argTypes += smallTypeFromString(type);
-            i++;
+
+        for(int i = 0; i < node.jjtGetNumChildren(); i++) {
+
+            if(node.jjtGetChild(i) instanceof ASTArgument){
+
+                String type = ((ASTType)((SimpleNode) node.children[i]).children[0]).getType();
+                argTypes += smallTypeFromString(type);
+
+            }
+            
         }
+
         String returnType = smallTypeFromString(((ASTType) node.children[0]).getType());
 
         this.print.println(".method public static " + funcName + "("+ argTypes + ")" + returnType);
@@ -110,10 +128,19 @@ public class CodeGenerator {
         this.print.println("  .limit stack 99");
         this.print.println("  .limit locals 99");
 
-        this.print.println("continhas");
+        for(int i = 0; i < node.jjtGetNumChildren(); i++) {
 
+            if(((SimpleNode)node.jjtGetChild(i)) instanceof ASTStatementDeclarations){
+                
+                for(int j = 0; j < ((SimpleNode)node.jjtGetChild(i)).jjtGetNumChildren(); j++){
+                    ((SimpleNode) node.jjtGetChild(i).jjtGetChild(j)).generateCode(node.getSymbolTable(), this.print);
+                }
+            }
+            
+        }
 
         this.print.println(".end method");
+
     }
 
     private String smallTypeFromString(String type){
@@ -121,13 +148,14 @@ public class CodeGenerator {
             case "Int":
                 return "I";
             case "Bool":
-                return "B";
+                return "Z";
             case "Int[]":
                 return "[I";
             default:
                 return "UNKNOWN TYPE";
         }
     }
+
 
     private void tab() {
         this.print.print("\t");

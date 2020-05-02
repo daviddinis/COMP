@@ -10,7 +10,9 @@ class Custom {
 
     public int func(int k, boolean t, int[] o){
         int j;
+        j = 2 * 3;
         return j;
+        
     }
 
 }

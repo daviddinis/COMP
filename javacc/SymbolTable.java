@@ -3,7 +3,7 @@ import java.util.*;
 
 public class SymbolTable {
 
-    private HashMap<String, Symbol> table = new HashMap<String, Symbol>();
+    private LinkedHashMap<String, Symbol> table = new LinkedHashMap<String, Symbol>();
     private SymbolTable parent;
     private String returnType;
 
@@ -44,4 +44,10 @@ public class SymbolTable {
         }
         return allKeys;
     }
+
+    public int getTablePosition(String id){
+        ArrayList<String> keys = new ArrayList<String>(table.keySet());
+        return (keys.indexOf(id) + 1);
+    }
+
 }

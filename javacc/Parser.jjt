@@ -559,7 +559,7 @@ void Term9() #void :
   | 
     LOOKAHEAD(2) NewInt()
   | 
-   < NEW > Identifier() < LPAR > < RPAR > #NewId(1)
+   < NEW > Identifier() < LPAR > ArgumentCall() < RPAR > #NewId(2)
   | 
     < NOT >  Expression() #NOT(1)
   | 

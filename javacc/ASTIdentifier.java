@@ -83,12 +83,6 @@ public class ASTIdentifier extends SimpleNode implements ASTType{
   public void generateCode(SymbolTable table, PrintWriter print){
 
     String type = this.analyzeType(table);
-
-
-    System.out.println("PRINT: "+ this.getName());
-    System.out.println("PRINT: "+ table.getSymbol(this.getName()));
-    System.out.println("PRINT: "+ table.getSymbol(this.getName()).getAccess());
-
     if(table.getSymbol(this.getName()).getAccess() == Symbol.Access.global){
       String className = Parser.getInstance().className;
       print.println("aload_0");

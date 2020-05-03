@@ -11,7 +11,6 @@ import Map.remove(int) boolean;
 
 //content can be changed to other Types (e.g. boolean, int[], MyClass)
 import List;
-import List(int);
 import List.add(int);
 import List.add(int, int);
 import List.contains(int) boolean;

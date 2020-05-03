@@ -6,12 +6,23 @@ public class SymbolTable {
     private LinkedHashMap<String, Symbol> table = new LinkedHashMap<String, Symbol>();
     private SymbolTable parent;
     private String returnType;
+    private Boolean isStatic;
 
     public SymbolTable(SymbolTable parent){
         this.parent = parent;
+        this.isStatic = false;
     }
     public SymbolTable(){
         this.parent = null;
+        this.isStatic = false;
+    }
+
+    public Boolean getStatic(){
+        return isStatic;
+    }
+
+    public void setStatic(Boolean bool){
+        this.isStatic = bool;
     }
 
     public String getReturnType(){

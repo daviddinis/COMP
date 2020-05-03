@@ -151,6 +151,8 @@ public class CodeGenerator {
                 return "Z";
             case "Int[]":
                 return "[I";
+            case "void":
+                return "V";
             default:
                 return "UNKNOWN TYPE";
         }

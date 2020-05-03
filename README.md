@@ -83,7 +83,7 @@ todas as verificações feitas na análise semantica devem reportar erro excepto
 * [x] estrutura básica de classe (incluindo construtor <init>)  
 * [x] estrutura básica de fields  
 * [x] estrutura básica de métodos (podem desconsiderar os limites neste checkpoint: limit_stack 99, limit_locals 99)  
-* [ ] assignments  
-* [ ] operações aritméticas (com prioridade de operações correta)  
+* [x] assignments  
+* [x] operações aritméticas (com prioridade de operações correta)  
 	- neste checkpoint não é necessário a seleção das operações mais eficientes mas isto será considerado no CP3 e versão final  
-* [ ] invocação de métodos  
+* [x] invocação de métodos  

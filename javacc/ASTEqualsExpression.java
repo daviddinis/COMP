@@ -11,4 +11,5 @@ class ASTEqualsExpression extends SimpleNode {
   }
 
 }
+
 /* JavaCC - OriginalChecksum=e3b8de2614b53468a917f1bc0a1d662b (do not edit this line) */

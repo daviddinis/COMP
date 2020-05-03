@@ -28,6 +28,7 @@ public class ASTImport extends SimpleNode {
       String methodName = new String();
       if (isStatic) {
         //methodName += "static ";
+        newTable.setStatic(isStatic);
         Symbol s = new Symbol(((ASTIdentifier) children[0]).getName(), ((ASTIdentifier) children[0]).getName(), Symbol.Access.global);
         symbolTable.addSymbol(s);
       }
@@ -50,6 +51,8 @@ public class ASTImport extends SimpleNode {
           methodName += ")";
           if (returnType) {
             newTable.setReturnType(((ASTType) children[i + 1]).getType());
+          }else{
+            newTable.setReturnType("void");
           }
           break;
         }

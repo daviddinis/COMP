@@ -1,22 +1,22 @@
+import static MathUtils.random(int,int) int; //lowerLimit,upperLimit
 class Custom {
 
-    int a;
-    boolean b;
-    int[] c;
+   
 
     public static void main(String[] args) {
-        int ola;
-        ola = 2 * 3 - 4 + 5 / 2;
-        ola = ola + ola;
+        Custom z;
+        int a;
+        z = new Custom();
+        a = z.func(5);
 	}
 
-   //public int func(int k, boolean t, int[] o){
+   public int func(int k){
    //    int j;
    //    int ola;
    //    ola = 2 * 3 - 4 + 5 / 2;
    //    j = ola + ola;
-   //    return 1;
+       return 1;
    //    
-   //}
+   }
 
 }

@@ -19,10 +19,11 @@ class ASTIntLiteral extends SimpleNode {
     return true;
   }
 
-  public void generateCode(SymbolTable table, PrintWriter print){
+  public int generateCode(SymbolTable table, PrintWriter print){
 
     print.print("\tbipush ");
     print.println(this.value);
+    return 1;
 
   }
 

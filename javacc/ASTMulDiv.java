@@ -24,15 +24,18 @@ class ASTMulDiv extends SimpleNode {
     return ((SimpleNode)children[0]).isInitialized(table) && ((SimpleNode)children[1]).isInitialized(table); 
   }
 
-  public void generateCode(SymbolTable table, PrintWriter print){
+  public int generateCode(SymbolTable table, PrintWriter print){
 
     String operation = getOperator();
 
     SimpleNode left = ((SimpleNode) children[0]);
     SimpleNode right = ((SimpleNode) children[1]);
     
-    left.generateCode(table, print);
-    right.generateCode(table, print);
+    int stackLeft = left.generateCode(table, print);
+    int stackRight = right.generateCode(table, print);
+    int bigger = Math.max(stackLeft, stackRight);
+    int smaller = min(stackLeft, stackRight);
+    int stackSize = Math.max(bigger, smaller+1);
     
     switch(operation){
       case "*":
@@ -43,6 +46,8 @@ class ASTMulDiv extends SimpleNode {
         print.println("\tidiv");
         break;
     }
+
+    return stackSize;
   }
   
 }

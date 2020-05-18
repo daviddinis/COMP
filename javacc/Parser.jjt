@@ -472,7 +472,7 @@ void While() #void : {}
     whileError(e); 
     skipto_while_expression(); 
   }
-  WhileBody()#While(2)
+  WhileBody(){jjtThis.setLine(getToken(1).beginLine);jjtThis.setColumn(getToken(1).beginColumn);}#While(2)
 }
 
 void WhileExpression() :
@@ -491,7 +491,7 @@ void WhileBody() :
 void Expression()  #void :
 {}
 {
-  Term1() ( LOOKAHEAD(2) And() #And(2) )*
+  Term1() ( LOOKAHEAD(2) And() {jjtThis.setLine(getToken(1).beginLine);jjtThis.setColumn(getToken(1).beginColumn);}#And(2) )*
 }
 
 void And() #void : {}
@@ -502,7 +502,7 @@ void And() #void : {}
 void Term1() #void :
 {}
 {
-  Term2() ( LOOKAHEAD(2) LessThan() #LessThan(2) )* 
+  Term2() ( LOOKAHEAD(2) LessThan() {jjtThis.setLine(getToken(1).beginLine);jjtThis.setColumn(getToken(1).beginColumn-1);}#LessThan(2) )* 
 }
 
 void LessThan() #void : {}
@@ -549,6 +549,8 @@ void Term9() #void :
 {}
 {
   (
+    < NOT >  Expression() {jjtThis.setLine(getToken(1).beginLine);jjtThis.setColumn(getToken(1).beginColumn-1);}#NOT(1)
+  |
     IntLiteral() 
   | 
     < TRUE > #TRUE
@@ -559,9 +561,7 @@ void Term9() #void :
   | 
     LOOKAHEAD(2) NewInt()
   | 
-   < NEW > Identifier() < LPAR > ArgumentCall() < RPAR > #NewId(2)
-  | 
-    < NOT >  Expression() #NOT(1)
+  < NEW > Identifier() < LPAR > ArgumentCall() < RPAR > #NewId(2)
   | 
     Par()
   |

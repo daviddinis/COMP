@@ -16,8 +16,9 @@ class ASTTHIS extends SimpleNode {
     return "this";
   }
 
-  public void generateCode(SymbolTable table, PrintWriter print){
-  print.println("aload_0");
+  public int generateCode(SymbolTable table, PrintWriter print){
+    print.println("aload_0");
+    return 1;
   }
 
 }

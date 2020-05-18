@@ -28,11 +28,11 @@ class ASTEquals extends SimpleNode {
     }
   }
 
-  public void generateCode(SymbolTable table, PrintWriter print){
+  public int generateCode(SymbolTable table, PrintWriter print){
 
     if(children[0] instanceof ASTIntArray){
       System.out.print("ARRAY MANIPULATION NOT COMPLETE");
-      return;
+      return 0;
     }
 
     ASTIdentifier left = ((ASTIdentifier) children[0]);
@@ -41,7 +41,7 @@ class ASTEquals extends SimpleNode {
     SimpleNode right = ((SimpleNode) children[1]);
     String type = left.analyzeType(table);
 
-    right.generateCode(table, print);
+    int stackSize = right.generateCode(table, print);
 
     if(table.getSymbol(left.getName()).getAccess() == Symbol.Access.global){
       String className = Parser.getInstance().className;
@@ -57,6 +57,7 @@ class ASTEquals extends SimpleNode {
       print.println(table.getTablePosition(left.getName()));
     }
 
+    return stackSize;
   }
 
 }

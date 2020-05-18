@@ -10,5 +10,13 @@ class ASTPar extends SimpleNode {
     super(p, id);
   }
 
+  public String analyzeType(SymbolTable table) {
+    return ((SimpleNode) children[0]).analyzeType(table);
+  }
+
+  public boolean isInitialized(SymbolTable table) {
+    return ((SimpleNode) children[0]).isInitialized(table);
+  }
+
 }
 /* JavaCC - OriginalChecksum=cafa4aa0b226cc1e3e11faa1d679a53c (do not edit this line) */

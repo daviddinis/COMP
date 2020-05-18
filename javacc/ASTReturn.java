@@ -18,9 +18,9 @@ public class ASTReturn extends SimpleNode {
     }
   }
 
-  public void generateCode(SymbolTable table, PrintWriter print){
+  public int generateCode(SymbolTable table, PrintWriter print){
 
-    ((SimpleNode)this.children[0]).generateCode(table, print);
+    int stackSize = ((SimpleNode)this.children[0]).generateCode(table, print);
 
     String returnType = table.getReturnType();
     String smallReturn;
@@ -43,6 +43,8 @@ public class ASTReturn extends SimpleNode {
     }
     print.println("\t" + smallReturn+ "return");
   }
+
+  return stackSize;
 
 }
 /*

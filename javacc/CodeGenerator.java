@@ -84,22 +84,28 @@ public class CodeGenerator {
 
     private void createMain(SimpleNode node) {
 
+        int localSize = 1 + node.getSymbolTable().getSize();
+
         newLine();
         this.print.println(".method public static main([Ljava/lang/String;)V");
-        this.print.println("  .limit stack 99");
-        this.print.println("  .limit locals 99");
-
+        this.print.println("  .limit locals " + localSize);
+        
+        int maxStackSize = 0;
         for (int i = 0; i < node.jjtGetNumChildren(); i++) {
-
+            
             if (((SimpleNode) node.jjtGetChild(i)) instanceof ASTStatementDeclarations) {
-
+                
                 for (int j = 0; j < ((SimpleNode) node.jjtGetChild(i)).jjtGetNumChildren(); j++) {
-                    ((SimpleNode) node.jjtGetChild(i).jjtGetChild(j)).generateCode(node.getSymbolTable(), this.print);
+                    int stackSize = ((SimpleNode) node.jjtGetChild(i).jjtGetChild(j)).generateCode(node.getSymbolTable(), this.print);
+                    maxStackSize = Math.max(stackSize, maxStackSize);
                 }
             }
-
+            
         }
+
+        
         this.print.println("\treturn");
+        this.print.println("  .limit stack " + maxStackSize);
         this.print.println(".end method");
     }
 
@@ -109,10 +115,11 @@ public class CodeGenerator {
         String funcName = ((ASTIdentifier) node.children[1]).getName();
         String argTypes = "";
 
+        int arguments = 0;
         for (int i = 0; i < node.jjtGetNumChildren(); i++) {
 
             if (node.jjtGetChild(i) instanceof ASTArgument) {
-
+                arguments++;
                 String type = ((ASTType) ((SimpleNode) node.children[i]).children[0]).getType();
                 argTypes += smallTypeFromString(type);
 
@@ -124,22 +131,25 @@ public class CodeGenerator {
 
         this.print.println(".method public " + funcName + "(" + argTypes + ")" + returnType);
 
-        this.print.println("  .limit stack 99");
-        this.print.println("  .limit locals 99");
+        int localSize = 1 + arguments + node.getSymbolTable().getSize();
 
+        this.print.println("  .limit locals " + localSize);
+        
+        int maxStackSize = 0;
         for (int i = 0; i < node.jjtGetNumChildren(); i++) {
-
+            
             if (((SimpleNode) node.jjtGetChild(i)) instanceof ASTStatementDeclarations) {
-
+                
                 for (int j = 0; j < ((SimpleNode) node.jjtGetChild(i)).jjtGetNumChildren(); j++) {
-                    ((SimpleNode) node.jjtGetChild(i).jjtGetChild(j)).generateCode(node.getSymbolTable(), this.print);
+                    int stackSize = ((SimpleNode) node.jjtGetChild(i).jjtGetChild(j)).generateCode(node.getSymbolTable(), this.print);
+                    maxStackSize = Math.max(stackSize, maxStackSize);
                 }
             }
-
+            
         }
-
-
+        
         ((ASTReturn) node.children[node.children.length - 1]).generateCode(node.getSymbolTable(),  this.print);
+        this.print.println("  .limit stack " + maxStackSize);
         this.print.println(".end method");
     }
 

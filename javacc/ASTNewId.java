@@ -19,13 +19,15 @@ public class ASTNewId extends SimpleNode {
     return true;
   }
 
-  public void generateCode(SymbolTable table, PrintWriter print) {
+  public int generateCode(SymbolTable table, PrintWriter print) {
     if (analyzeType(table).equals(Parser.getInstance().className)) {
       print.println("\tnew " + analyzeType(table));
       print.println("\tdup");
+      int arguments = 0;
       if (((SimpleNode)children[1]).children != null) {
 
         for (int i = 0; i < ((ASTArgumentCall) children[1]).children.length; i++) {
+          arguments++;
           ((SimpleNode) ((ASTArgumentCall) children[1]).children[i]).generateCode(table, print);
         }
       }
@@ -39,6 +41,7 @@ public class ASTNewId extends SimpleNode {
       }
       print.println(")V");
     }
+    return arguments+2;
 
   }
 }

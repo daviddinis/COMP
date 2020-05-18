@@ -80,7 +80,7 @@ public class ASTIdentifier extends SimpleNode implements ASTType{
   }
 
 
-  public void generateCode(SymbolTable table, PrintWriter print){
+  public int generateCode(SymbolTable table, PrintWriter print){
 
     String type = this.analyzeType(table);
     if(table.getSymbol(this.getName()).getAccess() == Symbol.Access.global){
@@ -97,6 +97,8 @@ public class ASTIdentifier extends SimpleNode implements ASTType{
       print.print("\taload ");
       print.println(table.getTablePosition(this.getName()));
     }
+
+    return 1;
 
   }
 

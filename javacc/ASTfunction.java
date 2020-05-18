@@ -35,7 +35,7 @@ public class ASTfunction extends SimpleNode {
         return Parser.getInstance().getTable(methodName).getReturnType();
       } else if (Parser.getInstance().extend != null
           && Parser.getInstance().getTable(Parser.getInstance().extend + "." + methodName) != null) {
-            methodName = Parser.getInstance().extend + "." + methodName;
+        methodName = Parser.getInstance().extend + "." + methodName;
         return Parser.getInstance().getTable(methodName).getReturnType();
       } else
         System.out.println("Function call " + methodName + " is not valid");
@@ -82,7 +82,7 @@ public class ASTfunction extends SimpleNode {
 
       } else if (Parser.getInstance().extend != null
           && Parser.getInstance().getTable(Parser.getInstance().extend + "." + methodName) != null) {
-            methodName = Parser.getInstance().extend + "." + methodName;
+        methodName = Parser.getInstance().extend + "." + methodName;
       } else {
         System.out.println("Function call " + methodName + " is not valid");
         Parser.getInstance().addSemanticError();
@@ -107,15 +107,19 @@ public class ASTfunction extends SimpleNode {
     }
   }
 
-  public void generateCode(SymbolTable table, PrintWriter print) {
+  public int generateCode(SymbolTable table, PrintWriter print) {
+
     SymbolTable newTable = Parser.getInstance().getTable(methodName);
     String returnType = newTable.getReturnType();
     Boolean isStatic = newTable.getStatic();
 
+    int arguments = 0;
     if (!isStatic) {
+      arguments++;
       ((SimpleNode) children[0]).generateCode(table, print);
       if (children[2] instanceof ASTArgumentCall && ((SimpleNode) children[2]).children != null) {
         for (int k = 0; k < ((ASTArgumentCall) children[2]).children.length; k++) {
+          arguments++;
           ((SimpleNode) ((ASTArgumentCall) children[2]).children[k]).generateCode(table, print);
         }
       }
@@ -134,6 +138,7 @@ public class ASTfunction extends SimpleNode {
     } else {
       if (children[2] instanceof ASTArgumentCall && ((SimpleNode) children[2]).children != null) {
         for (int k = 0; k < ((ASTArgumentCall) children[2]).children.length; k++) {
+          arguments++;
           ((SimpleNode) ((ASTArgumentCall) children[2]).children[k]).generateCode(table, print);
         }
       }
@@ -151,6 +156,7 @@ public class ASTfunction extends SimpleNode {
       print.println(CodeGenerator.smallTypeFromString(returnType));
 
     }
+    return Math.max(arguments, 1);
   }
 
 }

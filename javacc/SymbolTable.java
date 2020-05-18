@@ -61,4 +61,8 @@ public class SymbolTable {
         return (keys.indexOf(id) + 1);
     }
 
+    public int getSize() {
+        return table.keySet().size();
+    }
+
 }

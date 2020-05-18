@@ -13,6 +13,7 @@ public class SimpleNode implements Node {
   protected Parser parser;
   protected String name = null;
   protected int line;
+  protected int column;
   protected SymbolTable table;
   protected String operator;
 
@@ -113,6 +114,14 @@ public class SimpleNode implements Node {
     line = l;
   }
 
+  public int getColumn() {
+    return column;
+  }
+
+  public void setColumn(int c) {
+    column = c;
+  }
+
   public void createSymbolTable(SymbolTable symbolTable){
     if (children == null) return;
 
@@ -145,9 +154,9 @@ public class SimpleNode implements Node {
     return this.table;
   }
 
-  public void generateCode(SymbolTable symbolTable, PrintWriter print){
+  public int generateCode(SymbolTable symbolTable, PrintWriter print){
     
-
+    return 0;
   }
 
 }

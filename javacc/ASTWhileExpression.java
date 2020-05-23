@@ -23,13 +23,14 @@ class ASTWhileExpression extends SimpleNode {
   }
 
 
-  public void generateCode(SymbolTable symbolTable, PrintWriter print){
-    if (children == null) return;
+  public int generateCode(SymbolTable symbolTable, PrintWriter print){
+    if (children == null) return -1;
 
     for (int i = 0; i < children.length; i++) {
       ((SimpleNode) children[i]).generateCode(symbolTable, print);
     }
 
+    return 0;
   }
 }
 /* JavaCC - OriginalChecksum=a9e3b1f68dbe03321e86491d5d7e8b24 (do not edit this line) */

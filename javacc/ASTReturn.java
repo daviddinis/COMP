@@ -42,9 +42,10 @@ public class ASTReturn extends SimpleNode {
           break;
     }
     print.println("\t" + smallReturn+ "return");
+
+    return stackSize;
   }
 
-  return stackSize;
 
 }
 /*

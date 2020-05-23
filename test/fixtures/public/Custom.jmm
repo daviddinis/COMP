@@ -1,22 +1,32 @@
 import static MathUtils.random(int,int) int; //lowerLimit,upperLimit
 class Custom {
 
-   
-
     public static void main(String[] args) {
-        Custom z;
+
+        int[] x;
         int a;
-        z = new Custom();
-        a = z.func(5);
+        x = new int[10];
+
+        x[3] = 10;
+
+        a = x[3];
+
+        //Custom z;
+        //int a;
+        //a = z.func(5);
+        //z = new Custom();
+        //x[1] = 2;
 	}
 
    public int func(int k){
+       // int b;
+       // b = 3;
    //    int j;
    //    int ola;
    //    ola = 2 * 3 - 4 + 5 / 2;
    //    j = ola + ola;
        return 1;
-   //    
+    
    }
 
 }

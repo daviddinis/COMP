@@ -89,7 +89,7 @@ public class ASTIdentifier extends SimpleNode implements ASTType{
       print.print("\tgetfield ");
       print.println(className + "/" + this.getName() + " "+ CodeGenerator.smallTypeFromString(type));
     }
-    else if( ((type).equals("Int")) || ((type).equals("Int[]")) || ((type).equals("Bool")) ){
+    else if( ((type).equals("Int")) || ((type).equals("Bool")) ){
       print.print("\tiload ");
       print.println(table.getTablePosition(this.getName()));
     }

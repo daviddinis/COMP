@@ -45,7 +45,7 @@ class ASTAnd extends SimpleNode {
     print.println(label_endif+ ":");
     
     int bigger = Math.max(stackLeft, stackRight);
-    int smaller = min(stackLeft, stackRight);
+    int smaller = Math.min(stackLeft, stackRight);
     int stackSize = Math.max(bigger, smaller+1);
     return stackSize;
   }

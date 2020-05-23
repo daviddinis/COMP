@@ -20,10 +20,11 @@ public class ASTNewId extends SimpleNode {
   }
 
   public int generateCode(SymbolTable table, PrintWriter print) {
+    int arguments = 0;
     if (analyzeType(table).equals(Parser.getInstance().className)) {
       print.println("\tnew " + analyzeType(table));
       print.println("\tdup");
-      int arguments = 0;
+  
       if (((SimpleNode)children[1]).children != null) {
 
         for (int i = 0; i < ((ASTArgumentCall) children[1]).children.length; i++) {
@@ -34,15 +35,14 @@ public class ASTNewId extends SimpleNode {
       print.print("\tinvokespecial " + analyzeType(table) + "/<init>(");
       if (((SimpleNode)children[1]).children != null) {
         for (int i = 0; i < ((ASTArgumentCall) children[1]).children.length; i++) {
-          String type = CodeGenerator
-              .smallTypeFromString(((SimpleNode) ((ASTArgumentCall) children[2]).children[i]).analyzeType(table));
+          String type = CodeGenerator.smallTypeFromString(((SimpleNode) ((ASTArgumentCall) children[2]).children[i]).analyzeType(table));
           print.print(type);
         }
       }
       print.println(")V");
+      
     }
     return arguments+2;
-
   }
 }
 /*

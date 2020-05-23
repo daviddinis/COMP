@@ -52,7 +52,7 @@ public class ParserTest {
             fail();
         }
     }
-
+    /*
     @Test
     public void testFindMaximum() {
     test("fixtures/public/FindMaximum.jmm", false);
@@ -182,5 +182,5 @@ public class ParserTest {
     public void testNestedLoop() {
     test("fixtures/public/fail/syntactical/NestedLoop.jmm", true);
     }
-
+    */
 }

@@ -118,7 +118,9 @@ public class Parser
     // -- Semantic Analysis --
     root.createSymbolTable(parser.getclassTable());
       // static io.println(Int) function added
-    parser.addMethod("io.println(Int)", new SymbolTable());
+    SymbolTable ioTable = new SymbolTable();
+    ioTable.setStatic(true);
+    parser.addMethod("io.println(Int)", ioTable);
     parser.classTable.addSymbol(new Symbol("io", "io", Symbol.Access.global));
 
     if (debug) {
@@ -525,7 +527,9 @@ void Term3()  #void :
 void Term6() #void  :
 {}
 {
-  Term7() [ LOOKAHEAD(2) < LSQUARE > Expression() #IntArray(2) <RSQUARE> ]
+  (Term7() [ LOOKAHEAD(2) < LSQUARE > Expression() #IntArray(2) <RSQUARE> ]
+  | < NOT >  Term8() {jjtThis.setLine(getToken(1).beginLine);jjtThis.setColumn(getToken(1).beginColumn-1);}#NOT(1)
+  )
 }
 
 void Term7()#void   :
@@ -549,8 +553,6 @@ void Term9() #void :
 {}
 {
   (
-    < NOT >  Expression() {jjtThis.setLine(getToken(1).beginLine);jjtThis.setColumn(getToken(1).beginColumn-1);}#NOT(1)
-  |
     IntLiteral() 
   | 
     < TRUE > #TRUE

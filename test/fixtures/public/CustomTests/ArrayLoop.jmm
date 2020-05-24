@@ -1,0 +1,50 @@
+
+class ArrayLoop {
+
+    int field;
+
+    public static void main(String[] args) {
+
+        int[] x;
+        int a;
+        ArrayLoop object;
+        
+        x = new int[10];
+        a = 0;
+        object = new ArrayLoop();
+
+        //Prints 0->9
+        while(a < x.length){
+            x[a] = a;
+            io.println(x[a]);
+            a = a + 1;
+        }
+
+        //Prints (9->0) *2)
+        a = x.length - 1;
+        while( 0 - 1 < a ){
+            x[a] = object.func(a);
+            io.println(x[a]);
+            a = a - 1;
+        }
+
+
+        io.println(x[9] * x[9]);
+	}
+
+    public int func(int k){
+       return k * 2;
+    }
+
+
+    public ArrayLoop getInstance(){
+        return new ArrayLoop();
+    }
+
+    public void setField(int fieldValue){
+        this.field = fieldValue;
+    }
+    public void getField(){
+        return this.field;
+    }
+}

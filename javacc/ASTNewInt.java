@@ -24,9 +24,9 @@ public class ASTNewInt extends SimpleNode {
   }
 
   public int generateCode(SymbolTable symbolTable, PrintWriter print){
-    ((SimpleNode)children[0]).generateCode(symbolTable, print);
+    int stackSize = ((SimpleNode)children[0]).generateCode(symbolTable, print);
     print.println("\tnewarray int ");
-    return 0;
+    return stackSize;
   }
 
 }

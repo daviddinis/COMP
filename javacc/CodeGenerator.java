@@ -1,6 +1,7 @@
 import java.util.*;
 
 import java.io.*;
+import java.math.MathContext;
 
 public class CodeGenerator {
 
@@ -142,15 +143,17 @@ public class CodeGenerator {
                 
                 for (int j = 0; j < ((SimpleNode) node.jjtGetChild(i)).jjtGetNumChildren(); j++) {
                     int stackSize = ((SimpleNode) node.jjtGetChild(i).jjtGetChild(j)).generateCode(node.getSymbolTable(), this.print);
+                    
                     maxStackSize = Math.max(stackSize, maxStackSize);
                 }
             }
             
         }
         
-        ((ASTReturn) node.children[node.children.length - 1]).generateCode(node.getSymbolTable(),  this.print);
+        maxStackSize = Math.max(((ASTReturn) node.children[node.children.length - 1]).generateCode(node.getSymbolTable(),  this.print), maxStackSize);
         this.print.println("  .limit stack " + maxStackSize);
         this.print.println(".end method");
+
     }
 
     public static String smallTypeFromString(String type) {
@@ -164,7 +167,7 @@ public class CodeGenerator {
             case "void":
                 return "V";
             default:
-                return "UNKNOWN TYPE";
+                return "L" + type + ";";
         }
     }
 

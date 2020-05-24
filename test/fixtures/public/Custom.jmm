@@ -7,7 +7,7 @@ class Custom {
         int a;
         x = new int[10];
 
-        //x[3] = 10;
+        x[3] = 10;
 
         //a = x[3];
 

@@ -17,7 +17,7 @@ class ASTTHIS extends SimpleNode {
   }
 
   public int generateCode(SymbolTable table, PrintWriter print){
-    print.println("aload_0");
+    print.println("\taload_0");
     return 1;
   }
 

@@ -91,13 +91,13 @@ todas as verificações feitas na análise semantica devem reportar erro excepto
 ## Checklist CP3
 * [x] Generate JVM code accepted by jasmin for conditional instructions(ifandif-else)
 * [x] Generate JVM code accepted by jasmin for loops
-* [ ] Stack limit and local limit correctly calculated
-* [ ] Generate JVM code accepted by jasmin to deal with arrays;
-  - [ ] array initialization
-  - [ ] array store (astore)
-  - [ ] array access (aload)
-  - [ ] array position store
-  - [ ] array position access
+* [x] Stack limit and local limit correctly calculated
+* [x] Generate JVM code accepted by jasmin to deal with arrays;
+  - [x] array initialization
+  - [x] array store (astore)
+  - [x] array access (aload)
+  - [x] array position store
+  - [x] array position access
 * [ ] Complete the compiler and test it using a set of Java-- classes
   - [ ] have all given tests executing and passing
   - [ ] have at least 5 own tests comprising the overall project

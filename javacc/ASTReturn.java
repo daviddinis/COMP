@@ -32,7 +32,7 @@ public class ASTReturn extends SimpleNode {
           smallReturn = "i";
           break;
       case "Int[]":
-          smallReturn = "ia";
+          smallReturn = "a";
           break;
       case "void":
           smallReturn = "";

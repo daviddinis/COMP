@@ -31,7 +31,7 @@ class ASTEquals extends SimpleNode {
   public int generateCode(SymbolTable table, PrintWriter print){
 
     SimpleNode right = ((SimpleNode) children[1]);
-    int stackSize;
+    int stackSize = 0;
 
     if(children[0] instanceof ASTIntArray){
       ((SimpleNode) ((SimpleNode) children[0]).children[0]).generateCode(table, print);
@@ -44,18 +44,19 @@ class ASTEquals extends SimpleNode {
     ASTIdentifier left = ((ASTIdentifier) children[0]);
     String type = left.analyzeType(table);
 
-    stackSize = right.generateCode(table, print);
-
     if(table.getSymbol(left.getName()).getAccess() == Symbol.Access.global){
       String className = Parser.getInstance().className;
       print.println("aload_0");
+      stackSize = right.generateCode(table, print) + 1;
       print.println("\tputfield " + className + "/" + left.getName() +" "+ CodeGenerator.smallTypeFromString(type));
     }
     else if( ((type).equals("Int")) || ((type).equals("Bool")) ){
+      stackSize = right.generateCode(table, print);
       print.print("\tistore ");
       print.println(table.getTablePosition(left.getName()));
     }
     else{
+      stackSize = right.generateCode(table, print);
       print.print("\tastore ");
       print.println(table.getTablePosition(left.getName()));
     }

@@ -111,6 +111,12 @@ public class ASTfunction extends SimpleNode {
 
     SymbolTable newTable = Parser.getInstance().getTable(methodName);
     String returnType = newTable.getReturnType();
+    if (returnType != null){
+      returnType = CodeGenerator.smallTypeFromString(returnType);
+    }
+    else{
+      returnType = "V";
+    }
     Boolean isStatic = newTable.getStatic();
 
     int arguments = 0;
@@ -123,7 +129,10 @@ public class ASTfunction extends SimpleNode {
           ((SimpleNode) ((ASTArgumentCall) children[2]).children[k]).generateCode(table, print);
         }
       }
-      print.print("\tinvokevirtual " + ((SimpleNode) children[0]).analyzeType(table) + ".");
+      print.print("\tinvokevirtual ");
+      if (!((SimpleNode) children[0]).analyzeType(table).equals("this")){
+        print.print(((SimpleNode) children[0]).analyzeType(table) + ".");
+      }
       print.print(((ASTIdentifier) children[1]).getName() + "(");
       if (((SimpleNode) children[2]).children != null) {
 
@@ -134,7 +143,8 @@ public class ASTfunction extends SimpleNode {
         }
       }
       print.print(")");
-      print.println(CodeGenerator.smallTypeFromString(returnType));
+
+        print.println(returnType);
     } else {
       if (children[2] instanceof ASTArgumentCall && ((SimpleNode) children[2]).children != null) {
         for (int k = 0; k < ((ASTArgumentCall) children[2]).children.length; k++) {
@@ -142,8 +152,12 @@ public class ASTfunction extends SimpleNode {
           ((SimpleNode) ((ASTArgumentCall) children[2]).children[k]).generateCode(table, print);
         }
       }
-      print.print("\tinvokestatic " + ((SimpleNode) children[0]).analyzeType(table) + ".");
-      print.print(((ASTIdentifier) children[1]).getName() + "(");
+      if (((SimpleNode) children[0]).analyzeType(table).equals("io")) {
+        print.print("invokestatic io/" + ((ASTIdentifier) children[1]).getName() + "(");
+      } else {
+        print.print("\tinvokestatic " + ((SimpleNode) children[0]).analyzeType(table) + ".");
+        print.print(((ASTIdentifier) children[1]).getName() + "(");
+      }
       if (((SimpleNode) children[2]).children != null) {
 
         for (int k = 0; k < ((ASTArgumentCall) children[2]).children.length; k++) {
@@ -153,7 +167,7 @@ public class ASTfunction extends SimpleNode {
         }
       }
       print.print(")");
-      print.println(CodeGenerator.smallTypeFromString(returnType));
+      print.println(returnType);
 
     }
     return Math.max(arguments, 1);

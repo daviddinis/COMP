@@ -1,5 +1,4 @@
 import static BoardBase.sameArray(int[]) boolean;
-//import static BoardBase.sameArray(int[]) boolean;
 import static BoardBase.printBoard(int[],int[],int[]) void; 
 import static BoardBase.printWinner(int) void;
 import static BoardBase.playerTurn(int) int[];
@@ -155,7 +154,7 @@ class TicTacToe {
 
 
   public static void main(String[] args) {
-    // Create the TicTacToe object.
+    //Create the TicTacToe object.
     TicTacToe mygame;
     int win;
     boolean done;
@@ -163,7 +162,7 @@ class TicTacToe {
     int player;
     mygame = new TicTacToe();
     mygame.init();
-    // Play as long as there is no winner or tie.
+    //Play as long as there is no winner or tie.
     while (!(mygame.winner() < 0-1) && !(0-1 < mygame.winner()) ) {
       done = false;
       // Read in a move & check if it's valid.

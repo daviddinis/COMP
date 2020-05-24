@@ -1,0 +1,43 @@
+import ArrayLoop;
+import ArrayLoop.func(int) int;
+import ArrayLoop.getInstance() ArrayLoop;
+
+class ObjectsCalling {
+
+    ArrayLoop fieldTester;
+
+    public static void main(String[] Args){
+        
+        ArrayLoop arrayLoop;
+        ArrayLoop instance;
+        ObjectsCalling obj;
+
+        obj = new ObjectsCalling();
+
+        arrayLoop = new ArrayLoop();
+
+        //Print 5*2
+        io.println(arrayLoop.func(5));
+
+        instance = arrayLoop.getInstance();
+
+        //Print 10*2
+        io.println(instance.func(10));
+
+        arrayLoop.setField(45);
+        fieldTester = obj.setFieldTester(arrayLoop);
+        
+        //Prints 45
+        io.println(this.fieldTester.getField());
+        
+        instance.setField(350);
+        fieldTester = obj.setFieldTester(instance);
+
+        //Prints 350
+        io.println(this.fieldTester.getField());
+    }
+
+    public void setFieldTester(ArrayLoop fieldTester){
+        this.fieldTester = fieldTester;
+    }
+}

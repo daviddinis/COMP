@@ -21,7 +21,6 @@ public class ASTNewId extends SimpleNode {
 
   public int generateCode(SymbolTable table, PrintWriter print) {
     int arguments = 0;
-    if (analyzeType(table).equals(Parser.getInstance().className)) {
       print.println("\tnew " + analyzeType(table));
       print.println("\tdup");
   
@@ -41,7 +40,7 @@ public class ASTNewId extends SimpleNode {
       }
       print.println(")V");
       
-    }
+    
     return arguments+2;
   }
 }

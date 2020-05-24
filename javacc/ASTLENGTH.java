@@ -24,9 +24,9 @@ public class ASTLENGTH extends SimpleNode {
   }
 
   public int generateCode(SymbolTable symbolTable, PrintWriter print){
-      ((SimpleNode)children[0]).generateCode(symbolTable, print);
+      int stackSize = ((SimpleNode)children[0]).generateCode(symbolTable, print);
       print.println("\tarraylength ");
-      return 0;
+      return stackSize;
   }
 
 }

@@ -7,9 +7,11 @@ class Custom {
         int a;
         x = new int[10];
 
-        x[3] = 10;
+        //x[3] = 10;
 
-        a = x[3];
+        //a = x[3];
+
+        a = x.length;
 
         //Custom z;
         //int a;

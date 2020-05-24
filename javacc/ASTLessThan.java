@@ -37,7 +37,7 @@ class ASTLessThan extends SimpleNode {
 
     String label_else = "else_" + getLine() + getColumn(); 
     String label_endif = "endif_" + getLine() + getColumn(); 
-
+    
     print.println("\tif_icmpge " + label_else);
     print.println("\ticonst_1");
     print.println("\tgoto " + label_endif);

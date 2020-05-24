@@ -21,11 +21,27 @@ class ASTIntLiteral extends SimpleNode {
 
   public int generateCode(SymbolTable table, PrintWriter print){
 
-    print.print("\tbipush ");
-    print.println(this.value);
-    return 1;
+      int value;
+        
+      try{
+        value = (int)(this.value);
+        if(value >= 0 && value <= 5)
+          print.println("\ticonst_" + this.value);
+		    else if(value == -1)
+          print.println("\ticonst_m1 " + this.value);
+		    else if(value >= -128 && value <= 127)
+          print.println("\tbipush " + this.value);
+		    else if(value >= -32768 && value <= 32767)
+          print.println("\tsipush " + this.value);
+        else
+          print.println("\tldc " + this.value);
+      }catch(Exception e){
+          print.println("\tldc " + this.value);
+      }
 
+      return 1;
   }
 
 }
+
 /* JavaCC - OriginalChecksum=3cbf5a57c95087c442314130215558ea (do not edit this line) */

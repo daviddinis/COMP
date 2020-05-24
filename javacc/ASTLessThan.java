@@ -30,10 +30,9 @@ class ASTLessThan extends SimpleNode {
     SimpleNode right = ((SimpleNode) children[1]);
 
     int stackLeft = left.generateCode(symbolTable, print);
-    int stackRight = right.generateCode(symbolTable, print);
-    int bigger = Math.max(stackLeft, stackRight);
-    int smaller = Math.min(stackLeft, stackRight);
-    int stackSize = Math.max(bigger, smaller+1);
+    int stackRight = right.generateCode(symbolTable, print) + 1;
+
+    int stackSize = Math.max(stackRight, stackLeft);
 
     String label_else = "else_" + getLine() + getColumn(); 
     String label_endif = "endif_" + getLine() + getColumn(); 

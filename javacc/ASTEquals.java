@@ -46,9 +46,9 @@ class ASTEquals extends SimpleNode {
 
     if(table.getSymbol(left.getName()).getAccess() == Symbol.Access.global){
       String className = Parser.getInstance().className;
-      print.println("aload_0");
+      print.println("\taload_0");
       stackSize = right.generateCode(table, print) + 1;
-      print.println("\tputfield " + className + "/" + left.getName() +" "+ CodeGenerator.smallTypeFromString(type));
+      print.println("\tputfield " + className + "/_" + left.getName() +" "+ CodeGenerator.smallTypeFromString(type));
     }
     else if( ((type).equals("Int")) || ((type).equals("Bool")) ){
       stackSize = right.generateCode(table, print);

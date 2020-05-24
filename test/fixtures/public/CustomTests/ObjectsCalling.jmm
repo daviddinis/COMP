@@ -1,6 +1,8 @@
 import ArrayLoop;
 import ArrayLoop.func(int) int;
 import ArrayLoop.getInstance() ArrayLoop;
+import ArrayLoop.setField(int) int;
+import ArrayLoop.getField() int;
 
 class ObjectsCalling {
 
@@ -25,19 +27,24 @@ class ObjectsCalling {
         io.println(instance.func(10));
 
         arrayLoop.setField(45);
-        fieldTester = obj.setFieldTester(arrayLoop);
+        obj.setFieldTester(arrayLoop);
         
-        //Prints 45
-        io.println(this.fieldTester.getField());
+        //Prints 45 + 2
+        io.println((obj.getfieldTester()).getField() + 2);
         
         instance.setField(350);
-        fieldTester = obj.setFieldTester(instance);
+        obj.setFieldTester(instance);
 
         //Prints 350
-        io.println(this.fieldTester.getField());
+        io.println((obj.getfieldTester()).getField() / 2);
     }
 
-    public void setFieldTester(ArrayLoop fieldTester){
-        this.fieldTester = fieldTester;
+    public int setFieldTester(ArrayLoop fieldT){
+        fieldTester = fieldT;
+        return 0;
+    }
+
+    public ArrayLoop getfieldTester(){
+        return fieldTester;
     }
 }

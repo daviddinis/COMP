@@ -31,14 +31,16 @@ public class ASTfunction extends SimpleNode {
       }
       methodName += ")";
       if (Parser.getInstance().getTable(methodName) != null) {
-
-        return Parser.getInstance().getTable(methodName).getReturnType();
+        retType = Parser.getInstance().getTable(methodName).getReturnType();
+        return retType;
       } else if (Parser.getInstance().extend != null
           && Parser.getInstance().getTable(Parser.getInstance().extend + "." + methodName) != null) {
         methodName = Parser.getInstance().extend + "." + methodName;
-        return Parser.getInstance().getTable(methodName).getReturnType();
-      } else
+        retType = Parser.getInstance().getTable(methodName).getReturnType();
+        return retType;
+      } else{
         System.out.println("Function call " + methodName + " is not valid");
+      }
       return "";
     } else {
       methodName = ((SimpleNode) children[0]).analyzeType(table) + ".";
@@ -52,7 +54,8 @@ public class ASTfunction extends SimpleNode {
       }
       methodName += ")";
       if (Parser.getInstance().getTable(methodName) != null) {
-        return Parser.getInstance().getTable(methodName).getReturnType();
+        retType = Parser.getInstance().getTable(methodName).getReturnType();
+        return retType;
       } else {
         System.out.println("Function call " + methodName + " is not valid");
         return "";
@@ -79,10 +82,11 @@ public class ASTfunction extends SimpleNode {
       }
       methodName += ")";
       if (Parser.getInstance().getTable(methodName) != null) {
-
+        retType = Parser.getInstance().getTable(methodName).getReturnType();
       } else if (Parser.getInstance().extend != null
           && Parser.getInstance().getTable(Parser.getInstance().extend + "." + methodName) != null) {
         methodName = Parser.getInstance().extend + "." + methodName;
+        retType = Parser.getInstance().getTable(methodName).getReturnType();
       } else {
         System.out.println("Function call " + methodName + " is not valid");
         Parser.getInstance().addSemanticError();
@@ -99,7 +103,7 @@ public class ASTfunction extends SimpleNode {
       }
       methodName += ")";
       if (Parser.getInstance().getTable(methodName) != null) {
-
+        retType = Parser.getInstance().getTable(methodName).getReturnType();
       } else {
         System.out.println("Function call " + methodName + " is not valid");
         Parser.getInstance().addSemanticError();
@@ -111,10 +115,9 @@ public class ASTfunction extends SimpleNode {
 
     SymbolTable newTable = Parser.getInstance().getTable(methodName);
     String returnType = newTable.getReturnType();
-    if (returnType != null){
+    if (returnType != null) {
       returnType = CodeGenerator.smallTypeFromString(returnType);
-    }
-    else{
+    } else {
       returnType = "V";
     }
     Boolean isStatic = newTable.getStatic();
@@ -125,13 +128,14 @@ public class ASTfunction extends SimpleNode {
       ((SimpleNode) children[0]).generateCode(table, print);
       if (children[2] instanceof ASTArgumentCall && ((SimpleNode) children[2]).children != null) {
         for (int k = 0; k < ((ASTArgumentCall) children[2]).children.length; k++) {
-          arguments++;
-          ((SimpleNode) ((ASTArgumentCall) children[2]).children[k]).generateCode(table, print);
+          arguments += ((SimpleNode) ((ASTArgumentCall) children[2]).children[k]).generateCode(table, print);
         }
       }
       print.print("\tinvokevirtual ");
-      if (!((SimpleNode) children[0]).analyzeType(table).equals("this")){
+      if (!((SimpleNode) children[0]).analyzeType(table).equals("this")) {
         print.print(((SimpleNode) children[0]).analyzeType(table) + ".");
+      } else {
+        print.print(Parser.className + ".");
       }
       print.print(((ASTIdentifier) children[1]).getName() + "(");
       if (((SimpleNode) children[2]).children != null) {
@@ -144,12 +148,11 @@ public class ASTfunction extends SimpleNode {
       }
       print.print(")");
 
-        print.println(returnType);
+      print.println(returnType);
     } else {
       if (children[2] instanceof ASTArgumentCall && ((SimpleNode) children[2]).children != null) {
         for (int k = 0; k < ((ASTArgumentCall) children[2]).children.length; k++) {
-          arguments++;
-          ((SimpleNode) ((ASTArgumentCall) children[2]).children[k]).generateCode(table, print);
+          arguments += ((SimpleNode) ((ASTArgumentCall) children[2]).children[k]).generateCode(table, print);
         }
       }
       if (((SimpleNode) children[0]).analyzeType(table).equals("io")) {

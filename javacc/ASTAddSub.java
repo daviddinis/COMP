@@ -33,10 +33,9 @@ class ASTAddSub extends SimpleNode {
     SimpleNode right = ((SimpleNode) children[1]);
     
     int stackLeft = left.generateCode(table, print);
-    int stackRight = right.generateCode(table, print);
-    int bigger = Math.max(stackLeft, stackRight);
-    int smaller = Math.min(stackLeft, stackRight);
-    int stackSize = Math.max(bigger, smaller+1);
+    int stackRight = right.generateCode(table, print) + 1;
+
+    int stackSize = Math.max(stackRight, stackLeft);
 
     switch(operation){
         case "+":

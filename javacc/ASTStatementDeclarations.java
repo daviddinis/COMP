@@ -16,7 +16,13 @@ class ASTStatementDeclarations extends SimpleNode {
 
     int stackSize = 0;
     for (int i = 0; i < children.length; i++) {
-      stackSize = Math.max(((SimpleNode) children[i]).generateCode(symbolTable, print), stackSize);
+      int newStackSize = ((SimpleNode) children[i]).generateCode(symbolTable, print);
+      String retType = ((SimpleNode) children[i]).getReturnType();
+      if (retType != null && !retType.equals("void")) {
+          stackSize++;
+          print.println("\tpop");
+      }
+      stackSize = Math.max(newStackSize, stackSize);
     }
     return stackSize;
   }

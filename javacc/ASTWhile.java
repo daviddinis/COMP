@@ -20,6 +20,7 @@ class ASTWhile extends SimpleNode {
 
     print.println(label_while + ":");
     int expStack = expression.generateCode(symbolTable, print);
+    print.println(";while expr stack size: " + expStack);
     print.println("\tifeq " + label_end);
     int thenStack = then.generateCode(symbolTable, print);
     print.println("goto " + label_while);

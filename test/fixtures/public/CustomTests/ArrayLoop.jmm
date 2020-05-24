@@ -8,7 +8,9 @@ class ArrayLoop {
         int[] x;
         int a;
         ArrayLoop object;
-        
+        int[] arr;
+
+        arr = new int[1];
         x = new int[10];
         a = 0;
         object = new ArrayLoop();
@@ -30,6 +32,12 @@ class ArrayLoop {
 
 
         io.println(x[9] * x[9]);
+
+        arr[0] = 99;
+        //Array addition ( 99 + 2 )
+        x[0] = arr[0] + x[1];
+        io.println(x[0]);
+        
 	}
 
     public int func(int k){
@@ -41,10 +49,12 @@ class ArrayLoop {
         return new ArrayLoop();
     }
 
-    public void setField(int fieldValue){
-        this.field = fieldValue;
+    public int setField(int fieldValue){
+        field = fieldValue;
+        return 0;
     }
-    public void getField(){
-        return this.field;
+
+    public int getField(){
+        return field;
     }
 }

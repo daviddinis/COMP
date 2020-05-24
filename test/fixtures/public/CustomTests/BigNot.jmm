@@ -6,7 +6,7 @@ class BigNot {
         d = false;
         
         //Avalia para true
-        if( !( 1 < a && a < 3 && !( !d && a < 0)) ){
+        if( !( 1 < a && a < 3 && !( !d && a < 0)) && !false){
             a = 1;
             io.println(a);
         }else{

@@ -56,8 +56,6 @@ public class ASTIdentifier extends SimpleNode implements ASTType{
     if (id != null) {
       if (id.getAccess() == Symbol.Access.local && isScoped()) {
           id.scopeInitialize();
-      //} else if (id.getAccess() == Symbol.Access.global && isMethodScoped()) {
-        //  id.scopeInitialize();
       } else {
           id.initialize();
       }
@@ -85,9 +83,10 @@ public class ASTIdentifier extends SimpleNode implements ASTType{
     String type = this.analyzeType(table);
     if(table.getSymbol(this.getName()).getAccess() == Symbol.Access.global){
       String className = Parser.getInstance().className;
-      print.println("aload_0");
+      print.println("\taload_0");
       print.print("\tgetfield ");
-      print.println(className + "/" + this.getName() + " "+ CodeGenerator.smallTypeFromString(type));
+
+      print.println(className + "/_" + this.getName() + " "+ CodeGenerator.smallTypeFromString(type));
     }
     else if( ((type).equals("Int")) || ((type).equals("Bool")) ){
       print.print("\tiload ");

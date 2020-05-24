@@ -26,11 +26,12 @@ class ASTWhileExpression extends SimpleNode {
   public int generateCode(SymbolTable symbolTable, PrintWriter print){
     if (children == null) return -1;
 
+    int stackSize = 0;
     for (int i = 0; i < children.length; i++) {
-      ((SimpleNode) children[i]).generateCode(symbolTable, print);
+      stackSize = ((SimpleNode) children[i]).generateCode(symbolTable, print);
     }
 
-    return 0;
+    return stackSize;
   }
 }
 /* JavaCC - OriginalChecksum=a9e3b1f68dbe03321e86491d5d7e8b24 (do not edit this line) */

@@ -16,6 +16,7 @@ public class SimpleNode implements Node {
   protected int column;
   protected SymbolTable table;
   protected String operator;
+  protected String retType = null;
 
 
   public SimpleNode(int i) {
@@ -120,6 +121,10 @@ public class SimpleNode implements Node {
 
   public void setColumn(int c) {
     column = c;
+  }
+
+  public String getReturnType() {
+    return retType;
   }
 
   public void createSymbolTable(SymbolTable symbolTable){

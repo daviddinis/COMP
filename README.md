@@ -98,7 +98,7 @@ todas as verificações feitas na análise semantica devem reportar erro excepto
   - [x] array access (aload)
   - [x] array position store
   - [x] array position access
-* [ ] Complete the compiler and test it using a set of Java-- classes
-  - [ ] have all given tests executing and passing
-  - [ ] have at least 5 own tests comprising the overall project
-  - [ ] have 3 to 5 top-notch examples (different from the ones provided!) that demonstrate the potential of your project!
+* [x] Complete the compiler and test it using a set of Java-- classes
+  - [x] have all given tests executing and passing
+  - [x] have at least 5 own tests comprising the overall project
+  - [x] have 3 to 5 top-notch examples (different from the ones provided!) that demonstrate the potential of your project!

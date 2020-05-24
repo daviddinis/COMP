@@ -174,16 +174,16 @@ class TicTacToe {
 
         player = mygame.getCurrentPlayer();            
         move = BoardBase.playerTurn(player);
-	    
-      		
+
+        
         if (!mygame.inbounds(move[0],move[1])) 
           BoardBase.wrongMove();
         else {
           if (!mygame.Move(move[0],move[1]))
-             BoardBase.placeTaken();
+            BoardBase.placeTaken();
           else
             done = true;
-       } 
+        } 
       }
 	
       // Change who's turn it is.

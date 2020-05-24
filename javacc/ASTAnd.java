@@ -36,17 +36,15 @@ class ASTAnd extends SimpleNode {
 
     int stackLeft = left.generateCode(symbolTable, print);
     print.println("\tifeq " + label_else);
-    int stackRight = right.generateCode(symbolTable, print);
+    int stackRight = right.generateCode(symbolTable, print) + 1;
     print.println("\tifeq " + label_else);
     print.println("\ticonst_1");
     print.println("\tgoto " + label_endif);
     print.println(label_else + ":");
     print.println("\ticonst_0");
     print.println(label_endif+ ":");
-    
-    int bigger = Math.max(stackLeft, stackRight);
-    int smaller = Math.min(stackLeft, stackRight);
-    int stackSize = Math.max(bigger, smaller+1);
+
+    int stackSize = Math.max(stackRight, stackLeft);
     return stackSize;
   }
 }

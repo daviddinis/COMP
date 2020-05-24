@@ -24,6 +24,7 @@ public class CodeGenerator {
     public void generate() {
 
         int i = 0;
+        String extend = "java/lang/Object";
         while (this.classDeclaration.children.length > i) {
             SimpleNode node = ((SimpleNode) this.classDeclaration.children[i]);
             if (node instanceof ASTImport) {
@@ -31,7 +32,9 @@ public class CodeGenerator {
             } else if (node instanceof ASTIdentifier) {
                 createNotExtended();
             } else if (node instanceof ASTExtends) {
+
                 createExtend(node);
+                extend = ((ASTIdentifier) node.children[1]).getName();
             } else if (node instanceof ASTVariable) {
                 createField(node);
             } else if (node instanceof ASTMainMethod) {
@@ -43,7 +46,7 @@ public class CodeGenerator {
             i++;
         }
         newLine();
-        createConstructor();
+        createConstructor(extend);
         this.print.close();
     }
 
@@ -51,10 +54,11 @@ public class CodeGenerator {
         // TODO:
     }
 
-    private void createConstructor() {
+    private void createConstructor(String extend) {
         this.print.println(".method public <init>()V");
         this.print.println("  aload_0");
-        this.print.println("  invokenonvirtual java/lang/Object/<init>()V");
+
+        this.print.println("  invokenonvirtual " + extend +  "/<init>()V");
         this.print.println("  return");
         this.print.println(".end method");
         newLine();
@@ -80,7 +84,8 @@ public class CodeGenerator {
         String name = ((ASTIdentifier) field.children[1]).getName();
         tab();
         this.print.print(".field public ");
-        this.print.println(name + " " + smallTypeFromString(type));
+
+        this.print.println("_" + name + " " + smallTypeFromString(type));
     }
 
     private void createMain(SimpleNode node) {
@@ -98,7 +103,15 @@ public class CodeGenerator {
                 
                 for (int j = 0; j < ((SimpleNode) node.jjtGetChild(i)).jjtGetNumChildren(); j++) {
                     int stackSize = ((SimpleNode) node.jjtGetChild(i).jjtGetChild(j)).generateCode(node.getSymbolTable(), this.print);
+                    String retType = ((SimpleNode) node.jjtGetChild(i).jjtGetChild(j)).getReturnType();
+                    if (retType != null && !retType.equals("void")) {
+                        stackSize++;
+                        print.println("\tpop");
+                    }
+                    print.println(";statement stack size: " + stackSize);
                     maxStackSize = Math.max(stackSize, maxStackSize);
+                    print.println(";max stack size: " + maxStackSize);
+                
                 }
             }
             

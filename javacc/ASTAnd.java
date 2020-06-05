@@ -31,8 +31,9 @@ class ASTAnd extends SimpleNode {
   public int generateCode(SymbolTable symbolTable, PrintWriter print){
     SimpleNode left = ((SimpleNode) children[0]);
     SimpleNode right = ((SimpleNode) children[1]);
-    String label_else = "else_" + getLine() + getColumn(); 
-    String label_endif = "endif_" + getLine() + getColumn(); 
+    int label = Parser.getAndIncLabel();
+    String label_else = "else" + label; 
+    String label_endif = "endif" + label; 
 
     int stackLeft = left.generateCode(symbolTable, print);
     print.println("\tifeq " + label_else);

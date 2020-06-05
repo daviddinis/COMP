@@ -27,8 +27,10 @@ class ASTIf extends SimpleNode {
     SimpleNode expression = ((SimpleNode) children[0]);
     SimpleNode then = ((SimpleNode) children[1]);
     SimpleNode else_ = ((SimpleNode) children[2]);
-    String label_else = "else_" + getLine() + getColumn(); 
-    String label_endif = "endif_" + getLine() + getColumn(); 
+    int label = Parser.getAndIncLabel();
+    String label_else = "else" + label; 
+    String label_endif = "endif" + label; 
+
 
     int expStack = expression.generateCode(symbolTable, print);
     print.println("\tifeq " + label_else);

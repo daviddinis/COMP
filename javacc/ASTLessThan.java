@@ -34,8 +34,10 @@ class ASTLessThan extends SimpleNode {
 
     int stackSize = Math.max(stackRight, stackLeft);
 
-    String label_else = "else_" + getLine() + getColumn(); 
-    String label_endif = "endif_" + getLine() + getColumn(); 
+    int label = Parser.getAndIncLabel();
+    String label_else = "else" + label; 
+    String label_endif = "endif" + label; 
+
     
     print.println("\tif_icmpge " + label_else);
     print.println("\ticonst_1");

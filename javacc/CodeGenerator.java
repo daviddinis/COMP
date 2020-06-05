@@ -90,6 +90,8 @@ public class CodeGenerator {
 
     private void createMain(SimpleNode node) {
 
+        Parser.labelCounter = 1;
+
         int localSize = 1 + node.getSymbolTable().getSize();
 
         newLine();
@@ -124,7 +126,7 @@ public class CodeGenerator {
     }
 
     private void createMethod(SimpleNode node) {
-
+        Parser.labelCounter = 1;
         newLine();
         String funcName = ((ASTIdentifier) node.children[1]).getName();
         String argTypes = "";

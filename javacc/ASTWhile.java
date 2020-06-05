@@ -15,8 +15,10 @@ class ASTWhile extends SimpleNode {
   public int generateCode(SymbolTable symbolTable, PrintWriter print){
     SimpleNode expression = ((SimpleNode) children[0]);
     SimpleNode then = ((SimpleNode) children[1]); 
-    String label_while = "while_" + getLine() + getColumn();
-    String label_end = "end_" + getLine() + getColumn(); 
+    int label = Parser.getAndIncLabel();
+    String label_while = "else" + label; 
+    String label_end = "endif" + label; 
+
 
     print.println(label_while + ":");
     int expStack = expression.generateCode(symbolTable, print);

@@ -26,8 +26,10 @@ class ASTNOT extends SimpleNode {
   public int generateCode(SymbolTable symbolTable, PrintWriter print){
     // TODO CP4 XOR/ineg instead if
     SimpleNode expression = ((SimpleNode) children[0]);
-    String label_else = "else_" + getLine() + getColumn(); 
-    String label_endif = "endif_" + getLine() + getColumn(); 
+    int label = Parser.getAndIncLabel();
+    String label_else = "else" + label; 
+    String label_endif = "endif" + label; 
+
 
     int stackSize = expression.generateCode(symbolTable, print);
     print.println("\tifeq " + label_else);

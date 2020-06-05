@@ -3,6 +3,9 @@ import ArrayLoop.func(int) int;
 import ArrayLoop.getInstance() ArrayLoop;
 import ArrayLoop.setField(int) int;
 import ArrayLoop.getField() int;
+import LocalsOverFlow;
+import LocalsOverFlow.set(int) int;
+import LocalsOverFlow.get() int;
 
 class ObjectsCalling {
 
@@ -13,9 +16,10 @@ class ObjectsCalling {
         ArrayLoop arrayLoop;
         ArrayLoop instance;
         ObjectsCalling obj;
+        LocalsOverFlow localObj;
 
         obj = new ObjectsCalling();
-
+        localObj = new LocalsOverFlow();
         arrayLoop = new ArrayLoop();
 
         //Print 5*2
@@ -35,8 +39,15 @@ class ObjectsCalling {
         instance.setField(350);
         obj.setFieldTester(instance);
 
-        //Prints 350
+        //Prints 175
         io.println((obj.getfieldTester()).getField() / 2);
+
+        //prints 0
+        io.println(localObj.get());
+        localObj.set(3);
+        //prints 3
+        io.println(localObj.get());
+
     }
 
     public int setFieldTester(ArrayLoop fieldT){

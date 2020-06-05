@@ -1,0 +1,37 @@
+class BigNot {
+    public static void main(String[] Args){
+        int a;
+        boolean d;
+        BigNot s;
+        a= 0;
+        d = false;
+        s = new BigNot();
+        //Avalia para true/ Print 1
+        if( ((!( 1 < a && a < 3 && !( (!d) && a < 0)) && !false)
+                &&
+                s.retTrue()) 
+            && 
+                !s.retFalse())
+        {
+            a = 1;
+            io.println(a);
+        }else{
+            a = 3;
+            io.println(a);
+        }
+
+        //Avalia true durante 10 vezes/ Print 2->11
+        while(!(10 < a)){
+            a = a + 1;
+            io.println(a);
+        }
+
+    }
+
+    public boolean retFalse(){
+        return false;
+    }
+    public boolean retTrue(){
+        return true;
+    }
+}

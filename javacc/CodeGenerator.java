@@ -110,9 +110,7 @@ public class CodeGenerator {
                         stackSize++;
                         print.println("\tpop");
                     }
-                    print.println(";statement stack size: " + stackSize);
                     maxStackSize = Math.max(stackSize, maxStackSize);
-                    print.println(";max stack size: " + maxStackSize);
                 
                 }
             }

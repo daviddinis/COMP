@@ -46,11 +46,10 @@ sourceSets {
       java {
          srcDir 'test'
       }
-       resources {
-        srcDir 'test'
+      resources {
+         srcDir 'test'
       }
    }
-    
 }
 
 
@@ -65,17 +64,17 @@ jar {
 // Copy JAR to root folder
 task copyJar() {
 
-    doFirst {
+   doFirst {
 		copy {
 			println 'Copying JAR file to ./'
 			from jar
 			into "./"
 		}	
-    }
+   }
 }
 build.dependsOn copyJar
 
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+   implementation fileTree(dir: 'libs', include: ['*.jar'])
 }

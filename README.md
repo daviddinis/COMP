@@ -12,7 +12,7 @@ GLOBAL Grade of the project: 18
 EXECUTE:  
 ``` code 
 gradle build
-java -jar comp2020-4d.jar <jmm file> [(1: debug prints | 0: default) [1: ignore initialization warning | 0: default]]
+java -jar comp2020-4d.jar <jmm file> [-d (debug prints)] [-v (ignore variable initialization)] [-r=X] [-o]
 java -jar jasmin.jar <jasmin file>
 java <className>
 ```

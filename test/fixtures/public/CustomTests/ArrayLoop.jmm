@@ -15,13 +15,14 @@ class ArrayLoop {
         a = 0;
         object = new ArrayLoop();
 
+        
         //Prints 0->9
         while(a < x.length){
             x[a] = a;
             io.println(x[a]);
             a = a + 1;
         }
-
+        
         //Prints (9->0) *2)
         a = x.length - 1;
         while( 0 - 1 < a ){
@@ -29,15 +30,17 @@ class ArrayLoop {
             io.println(x[a]);
             a = a - 1;
         }
-
-
+        
+        
         io.println(x[9] * x[9]);
-
+        
         arr[0] = 99;
         //Array addition ( 99 + 2 )
         x[0] = arr[0] + x[1];
         io.println(x[0]);
         
+        //Prints 6
+        io.println(x[2+3-2]);
 	}
 
     public int func(int k){

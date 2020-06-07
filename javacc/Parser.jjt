@@ -91,7 +91,7 @@ public class Parser
           // not implemented
           break;
         default:
-          if (args[i].matches("-r=.")) {
+          if (args[i].matches("-r=.*")) {
             // not implemented
           } else {
             try {
@@ -112,7 +112,7 @@ public class Parser
       parser = new Parser(System.in);
       instance = parser;
     }
-    
+
     // -- Syntax Analysis --
     SimpleNode root = parser.Program();
     root.dump("");

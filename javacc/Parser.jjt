@@ -91,11 +91,14 @@ public class Parser
       try {
 		    java.io.FileInputStream file = new java.io.FileInputStream(new java.io.File(args[0]));
         parser = new Parser(file);
-        instance = parser;
-        debug = args[1].equals("1") ? true : false;
+        instance = parser; 
       } catch (FileNotFoundException e) {
         System.out.println(e);
         return;
+      }
+
+      try {
+        debug = args[1].equals("1") ? true : false;
       } catch (Exception e) {
 
       }
@@ -104,17 +107,21 @@ public class Parser
 		    java.io.FileInputStream file = new java.io.FileInputStream(new java.io.File(args[0]));
         parser = new Parser(file);
         instance = parser;
-      debug = args[1].equals("1") ? true : false;
-      varInitIgnore = args[2].equals("1") ? true : false;
       } catch (FileNotFoundException e) {
         System.out.println(e);
         return;
+      }
+
+      try {
+        debug = args[1].equals("1") ? true : false;
+        varInitIgnore = args[2].equals("1") ? true : false;
       } catch (Exception e) {
-        
+
       }
     }
     else {
-  	  parser = new Parser(System.in);
+      parser = new Parser(System.in);
+      instance = parser;
   	}
     // -- Syntax Analysis --
     SimpleNode root = parser.Program();

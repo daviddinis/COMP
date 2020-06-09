@@ -335,7 +335,7 @@ void VariableDeclarations() #void  :
 {}
 {
   (
-   LOOKAHEAD(2) Variable()
+  LOOKAHEAD(2) Variable()
   )*
 }
 

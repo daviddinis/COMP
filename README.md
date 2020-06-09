@@ -55,3 +55,9 @@ Our team relied heavily on Pair-Programming to develop this project. As such we 
 
 ### CONS:
  Our tool does not implement the '-r' and '-o' optimizations. Furthermore, our implementation of conditional expressions, in spite of working as intended, produces an extensive amount of code that can be hard to read and could be shortened.
+
+ ### Tests
+
+We provide some self-made tests in the directory tests/fixtures/public/CustomTests.
+
+The ObjectsCalling.jmm and ArrayLoop.jmm do not comply with the base syntax because they allow returning objects and accpeting objects as arguemnts. 

@@ -74,7 +74,7 @@ public class Parser
 
   public static void main(String args []) throws ParseException, SemanticException
   {
-    Parser parser;
+    Parser parser = null;
     
     errorCount = MAX_ERROR_COUNT;
 
